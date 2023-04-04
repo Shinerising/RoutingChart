@@ -155,7 +155,7 @@ const speedData = [
   [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
 ];
 const chartOption = {
-  grid: [{ left: '50', right: '20', top: '20', bottom: '60%' }, { left: '50', right: '20', top: '40%', bottom: '20' }],
+  grid: [{ left: '45', right: '20', top: '20', bottom: '60%' }, { left: '50', right: '20', top: '40%', bottom: '25' }],
   tooltip: [{
     trigger: "axis",
     axisPointer: {
@@ -310,8 +310,8 @@ const chartOption = {
     </div>
     <footer>
       <div class="controls">
-        <button><i class="icon-previous">向左</i></button>
-        <button><i class="icon-next">向右</i></button>
+        <button><i class="icon-previous">前进</i></button>
+        <button><i class="icon-next">后退</i></button>
         &nbsp;
         <button>查看原始事件</button>
       </div>
@@ -347,6 +347,8 @@ const chartOption = {
   flex-direction: row;
 
   .brief {
+    flex: 1;
+    min-width: 14rem;
     padding: .5rem 0;
     border-right: 1px solid #ccc;
 
@@ -358,7 +360,7 @@ const chartOption = {
   }
 
   .chart {
-    flex: 1;
+    flex: 4;
     height: 100%;
   }
 }
@@ -440,4 +442,22 @@ footer {
     }
   }
 }
+
+.icon-previous, .icon-next {
+  white-space: nowrap;
+  overflow: hidden;
+  color:transparent;
+  width:1.6em;
+  display:block;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.icon-previous{
+  background-image: var(--icon-previous);
+}
+.icon-next{
+  background-image: var(--icon-next);
+}
+
 </style>

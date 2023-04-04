@@ -131,7 +131,7 @@ footer.global {
   align-items: flex-start;
 
   aside {
-    min-width: 16rem;
+    min-width: 18rem;
     max-width: 24rem;
     height: 100%;
     display: flex;
