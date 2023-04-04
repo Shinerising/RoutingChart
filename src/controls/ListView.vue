@@ -10,9 +10,10 @@ const props = defineProps<propTypes>();
 const selectList = ref<boolean[]>(props.data.map(() => false));
 
 const row_select = (item:unknown, idx: number) => {
-  console.log(idx);
   selectList.value = selectList.value.map((_, i) => i === idx);
 }
+
+row_select(props.data[0], 0);
 </script>
 
 <template>

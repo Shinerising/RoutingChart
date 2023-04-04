@@ -53,9 +53,6 @@ const list = ref([{
 <style lang="scss" scoped>
 .retarder-selector {
   ul {
-    list-style: none;
-    padding: 0;
-
     li {
       margin: 1rem 0;
       display: flex;

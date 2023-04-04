@@ -76,7 +76,7 @@ input[type="checkbox"] {
 
 input[type="checkbox"]:checked {
   background-color: var(--color-text-hover);
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 96 960 960" width="24" fill="white"><path d="M382 799q-8 0-15-2.5t-13-8.5L182 616q-11-11-10.5-28.5T183 559q11-11 28-11t28 11l143 143 339-339q11-11 28.5-11t28.5 11q11 11 11 28.5T778 420L410 788q-6 6-13 8.5t-15 2.5Z"/></svg>');
+  background-image: var(--icon-check);
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -86,10 +86,16 @@ select {
   appearance: none;
   padding:.4rem 0 .4rem .6rem;
   border: 1px solid var(--color-border);
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 96 960 960" width="24"><path d="M480 694q-8 0-15-2.5t-13-8.5L267 498q-11-11-10.5-27.5T268 443q11-11 28-11t28 11l156 156 157-157q11-11 27.5-10.5T692 443q11 11 11 28t-11 28L508 683q-6 6-13 8.5t-15 2.5Z"/></svg>');
+  background-image: var(--icon-expand);
+  border-radius: .4em;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: right center;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
 }
 
 #app {
@@ -99,7 +105,7 @@ select {
   width: 100%;
   height: 100vh;
   min-width: 80rem;
-  min-height: 60rem;
+  min-height: 40rem;
   margin: 0;
   padding: 0rem;
 }
@@ -124,4 +130,21 @@ header.header-section::after{
   height:1px;
   margin-left: .5rem;
   background-color: var(--color-border);
+}
+
+button.button-flat{
+  display:inline-block;
+  border:none;
+  border-radius: 0;
+  width: 2.4em;
+  height: 2.4em;
+  opacity: .6;
+  background-color:transparent;
+  background-size: 80%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+button.button-flat:hover{
+  background-color:#DADADA;
 }
