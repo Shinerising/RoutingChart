@@ -73,8 +73,10 @@ jobs:
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json', '**/yarn.lock') }}-
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
+      - name: Optimize with Vite
+        run: ${{ steps.detect-package-manager.outputs.runner }} vite optimize --force
       - name: Build with Vite
-        run: ${{ steps.detect-package-manager.outputs.runner }} build
+        run: ${{ steps.detect-package-manager.outputs.runner }} vite build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
