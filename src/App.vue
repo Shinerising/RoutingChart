@@ -1,9 +1,38 @@
 <script setup lang="ts">
+import { ref, provide } from 'vue'
+import { use } from "echarts/core";
+import { CanvasRenderer } from "echarts/renderers";
+import {
+  BarChart,
+  LineChart,
+  ScatterChart,
+  PictorialBarChart,
+} from "echarts/charts";
+import {
+  GridComponent,
+  TooltipComponent,
+  DatasetComponent,
+} from "echarts/components";
+import { THEME_KEY } from "vue-echarts";
 import DateSelector from "./components/DateSelector.vue";
 import CutSelector from "./components/CutSelector.vue";
 import RetarderSelector from "./components/RetarderSelector.vue";
 import TrainSelector from "./components/TrainSelector.vue";
+import MainChart from "./components/MainChart.vue";
 import DeviceChart from "./components/DeviceChart.vue";
+
+use([
+  BarChart,
+  LineChart,
+  ScatterChart,
+  PictorialBarChart,
+  GridComponent,
+  DatasetComponent,
+  TooltipComponent,
+  CanvasRenderer,
+]);
+
+provide(THEME_KEY, "light");
 
 const refreshPage = () => {
   window.location.reload();
@@ -22,7 +51,13 @@ const toggleFullscreen = () => {
 
 <template>
   <header class="global">
+    <div class="icon-app">
+      <img src="favicon-32x32.png" alt="app logo" />
+    </div>
     <h1>列车溜放进路速度曲线查询界面</h1>
+    <span class="version">V0.0.1</span>
+    <span class="attension">当前程序仅供演示，请勿用于商业用途！</span>
+    <span class="blank"></span>
     <div class="controls-global">
       <button class="button-flat button-refresh" @click="refreshPage"/>
       <button class="button-flat button-fullscreen" @click="toggleFullscreen"/>
@@ -49,7 +84,7 @@ const toggleFullscreen = () => {
     </aside>
     <main>
       <section class="graph-main">
-        <div>进路控制过程</div>
+        <MainChart/>
       </section>
       <section class="graph-device">
         <DeviceChart/>
@@ -70,14 +105,30 @@ const toggleFullscreen = () => {
 header.global {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   background-color: var(--color-background-soft);
+  border-bottom:1px solid #DDD;
+
+  .icon-app{
+    margin-left: 1rem;
+    width:1.2rem;
+    height:1.2rem;
+    img{
+      width:100%;
+      height:100%;
+    }
+  }
 
   h1 {
     font-size: 1rem;
     padding: 0.5rem;
-    margin-left: 0.5rem;
+    margin:0 0.2rem;
+  }
+  .version, .attension{
+    margin:0 0.2rem;
+  }
+  .blank{
+    flex:1;
   }
   .button-refresh{
     margin-left:.5rem;
@@ -99,6 +150,7 @@ footer.global {
   justify-content: space-between;
   align-items: center;
   background-color: var(--color-background-soft);
+  border-top:1px solid #DDD;
 
   .status-bar {
     display: flex;
@@ -138,6 +190,7 @@ footer.global {
     flex-direction: column;
     padding: 0.5rem;
     background-color: #fafafa;
+    border-right:1px solid #DDD;
 
     section {
       flex: 1;

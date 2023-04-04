@@ -1,30 +1,6 @@
 <script setup lang="ts">
-import { ref, provide } from 'vue'
+import VChart from "vue-echarts";
 import type { EChartsOption } from "echarts";
-import { format, fromUnixTime } from "date-fns";
-import { use, type ECharts } from "echarts/core";
-import { CanvasRenderer } from "echarts/renderers";
-import {
-  LineChart,
-  ScatterChart,
-} from "echarts/charts";
-import {
-  GridComponent,
-  TooltipComponent,
-  DatasetComponent,
-} from "echarts/components";
-import VChart, { THEME_KEY } from "vue-echarts";
-
-use([
-  CanvasRenderer,
-  LineChart,
-  ScatterChart,
-  GridComponent,
-  DatasetComponent,
-  TooltipComponent,
-]);
-
-provide(THEME_KEY, "light");
 
 const legend = [{
   name: '轨道',
@@ -155,7 +131,7 @@ const speedData = [
   [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
 ];
 const chartOption = {
-  grid: [{ left: '45', right: '20', top: '20', bottom: '60%' }, { left: '50', right: '20', top: '40%', bottom: '25' }],
+  grid: [{ left: '46', right: '14', top: '14', bottom: '60%' }, { left: '46', right: '14', top: '40%', bottom: '26' }],
   tooltip: [{
     trigger: "axis",
     axisPointer: {
@@ -271,6 +247,7 @@ const chartOption = {
       },
       seriesLayoutBy: "row",
       showSymbol: false,
+      smooth: true,
       sampling: "average",
       xAxisIndex: 1,
       yAxisIndex: 1
@@ -284,13 +261,13 @@ const chartOption = {
       },
       seriesLayoutBy: "row",
       showSymbol: false,
+      smooth: true,
       sampling: "average",
       xAxisIndex: 1,
       yAxisIndex: 1
     },
   ],
 } satisfies EChartsOption;
-
 
 </script>
 
@@ -441,23 +418,6 @@ footer {
       }
     }
   }
-}
-
-.icon-previous, .icon-next {
-  white-space: nowrap;
-  overflow: hidden;
-  color:transparent;
-  width:1.6em;
-  display:block;
-  background-size: 100%;
-  background-repeat: no-repeat;
-  background-position: center;
-}
-.icon-previous{
-  background-image: var(--icon-previous);
-}
-.icon-next{
-  background-image: var(--icon-next);
 }
 
 </style>

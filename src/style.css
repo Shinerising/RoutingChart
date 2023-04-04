@@ -45,7 +45,7 @@ button {
 }
 
 button {
-  border-radius: .4em;
+  border-radius: .5em;
   border: 1px solid transparent;
   padding: .5em .8em;
   font-size: .9em;
@@ -70,7 +70,7 @@ input[type="checkbox"] {
   height: 1.8em;
   background-color: #fff;
   border: 1px solid var(--color-border);
-  border-radius: .4em;
+  border-radius: .5em;
   overflow: hidden;
 }
 
@@ -87,7 +87,8 @@ select {
   padding:.4rem 0 .4rem .6rem;
   border: 1px solid var(--color-border);
   background-image: var(--icon-expand);
-  border-radius: .4em;
+  background-color: #fff;
+  border-radius: .5em;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: right center;
@@ -147,4 +148,20 @@ button.button-flat{
 
 button.button-flat:hover{
   background-color:#DADADA;
+}
+.icon-previous, .icon-next {
+  white-space: nowrap;
+  overflow: hidden;
+  color:transparent;
+  width:1.6em;
+  display:block;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.icon-previous{
+  background-image: var(--icon-previous);
+}
+.icon-next{
+  background-image: var(--icon-next);
 }

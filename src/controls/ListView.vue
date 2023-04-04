@@ -60,21 +60,21 @@ td {
 }
 table {
   font-size: 0.9rem;
-  border-radius: 0.4rem;
+  border-radius: 0.5rem;
   border-style: hidden;
   box-shadow: 0 0 0 1px var(--color-border);
 }
 th:first-of-type {
-  border-top-left-radius: 0.4rem;
+  border-top-left-radius: 0.5rem;
 }
 th:last-of-type {
-  border-top-right-radius: 0.4rem;
+  border-top-right-radius: 0.5rem;
 }
 tr:last-of-type td:first-of-type {
-  border-bottom-left-radius: 0.4rem;
+  border-bottom-left-radius: 0.5rem;
 }
 tr:last-of-type td:last-of-type {
-  border-bottom-right-radius: 0.4rem;
+  border-bottom-right-radius: 0.5rem;
 }
 tr.selected td{
   background-color: var(--color-text-highlight);

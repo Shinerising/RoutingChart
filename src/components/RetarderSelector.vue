@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-
 const list = ref([{
   id: 1,
   checked: false,
@@ -72,6 +71,9 @@ const list = ref([{
         flex: 1;
         font-size:1rem;
       }
+    }
+    li:last-child{
+      margin-bottom: 0;
     }
   }
 }
