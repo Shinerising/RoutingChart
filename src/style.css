@@ -1,0 +1,127 @@
+:root {
+  font-size: 14px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: var(--color-text);
+  background: var(--color-background);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-height: 100vh;
+  background: var(--color-background);
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+a:hover {
+  color: #747bff;
+}
+button {
+  background-color: #f9f9f9;
+}
+
+button {
+  border-radius: .4em;
+  border: 1px solid transparent;
+  padding: .5em .8em;
+  font-size: .9em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #DADADA;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 1px auto -webkit-focus-ring-color;
+}
+
+input[type="checkbox"] {
+  appearance: none;
+  display: inline-block;
+  width: 1.8em;
+  height: 1.8em;
+  background-color: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: .4em;
+  overflow: hidden;
+}
+
+input[type="checkbox"]:checked {
+  background-color: var(--color-text-hover);
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 96 960 960" width="24" fill="white"><path d="M382 799q-8 0-15-2.5t-13-8.5L182 616q-11-11-10.5-28.5T183 559q11-11 28-11t28 11l143 143 339-339q11-11 28.5-11t28.5 11q11 11 11 28.5T778 420L410 788q-6 6-13 8.5t-15 2.5Z"/></svg>');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+select {
+  appearance: none;
+  padding:.4rem 0 .4rem .6rem;
+  border: 1px solid var(--color-border);
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 96 960 960" width="24"><path d="M480 694q-8 0-15-2.5t-13-8.5L267 498q-11-11-10.5-27.5T268 443q11-11 28-11t28 11l156 156 157-157q11-11 27.5-10.5T692 443q11 11 11 28t-11 28L508 683q-6 6-13 8.5t-15 2.5Z"/></svg>');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: right center;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-width: 80rem;
+  min-height: 60rem;
+  margin: 0;
+  padding: 0rem;
+}
+
+section{
+  position: relative;
+  padding: .5rem;
+}
+
+header.header-section{
+  display:flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--color-text-second);
+}
+
+header.header-section::after{
+  content:'';
+  display:block;
+  flex:1;
+  height:1px;
+  margin-left: .5rem;
+  background-color: var(--color-border);
+}
