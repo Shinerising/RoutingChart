@@ -52,7 +52,7 @@ const toggleFullscreen = () => {
 <template>
   <header class="global">
     <div class="icon-app">
-      <img src="favicon-32x32.png" alt="app logo" />
+      <img src="@/assets/images/app.png" alt="app logo" />
     </div>
     <h1>列车溜放进路速度曲线查询界面</h1>
     <span class="version">V0.0.1</span>
