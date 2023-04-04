@@ -54,15 +54,15 @@ const legend = [{
       name: '双有',
       color: 'blue'
     }, {
-      name: '双五',
+      name: '双无',
       color: 'lightgrey'
     }
   ]
 }];
 const brief = [
-  "三部位减速器控制信息（J301）",
-  "进入时间：2021-08-01 12:00:00",
-  "离开时间：2021-08-01 12:06:00",
+  "三部位减速器控制信息（J307）",
+  "进入时间：2023-02-15 14:50:45",
+  "离开时间：2023-02-15 14:51:10",
   "定速：4.5",
   "入口速度：18.3",
   "出口速度：5.5",
@@ -296,8 +296,14 @@ const chartOption = {
         <ul class="group">
           <li v-for="(item, i) in legend" :key="i">
             <label>{{ item.name }}</label>
-            <ul class="action" :data-count="item.list.length">
+            <ul class="action">
               <li v-for="(_item, j) in item.list" :key="j">
+                <label>{{ _item.name }}</label>
+                <span :style="{ backgroundColor: _item.color }"></span>
+              </li>
+            </ul>
+            <ul class="action" v-if="item.list.length > 2">
+              <li v-for="(_item, j) in item.list.slice(2)" :key="j">
                 <label>{{ _item.name }}</label>
                 <span :style="{ backgroundColor: _item.color }"></span>
               </li>
@@ -352,7 +358,7 @@ footer {
   border-radius: 0 0 .5rem .5rem;
 
   .controls {
-    flex: none;
+    flex: 1;
     padding: .25rem;
 
     button {
@@ -362,8 +368,6 @@ footer {
 
   .legend {
     overflow: hidden;
-    margin-left: 1rem;
-    flex: 1;
     font-size: .9rem;
 
     ul,
@@ -374,6 +378,7 @@ footer {
 
     .group {
       li {
+        margin-left: 1rem;
         align-items: center;
       }
 
@@ -388,10 +393,10 @@ footer {
     }
 
     .action {
-      flex-direction: row;
-      display: inline-flex;
+      flex-direction: column;
+      display: flex;
       flex-wrap: wrap;
-      writing-mode: vertical-lr;
+      overflow: hidden;
       align-content: flex-start;
       align-items: start;
       justify-content: center;
@@ -399,10 +404,9 @@ footer {
       margin-right: 1rem;
 
       li {
-        writing-mode: horizontal-tb;
+        margin-left: 0;
         align-items: center;
         justify-content: center;
-        margin-right: 1rem;
       }
 
       label {

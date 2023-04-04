@@ -37,13 +37,28 @@ const list = ref({
 </script>
 
 <template>
-  <header class="header-section">
-    车次选择
-  </header>
-  <div>
-    <ListView :header="list.header" :data="list.data"/>
+  <div class="selector">
+    <header class="header-section">
+      车次选择
+    </header>
+    <div class="list">
+      <ListView :header="list.header" :data="list.data" />
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
+.selector {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  .list {
+    position: relative;
+    flex: 1;
+    overflow: auto;
+    padding: 0 .5rem;
+    margin: 0 -.5rem;
+  }
+}
 </style>

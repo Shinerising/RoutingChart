@@ -59,8 +59,8 @@ const toggleFullscreen = () => {
     <span class="attension">当前程序仅供演示，请勿用于商业用途！</span>
     <span class="blank"></span>
     <div class="controls-global">
-      <button class="button-flat button-refresh" @click="refreshPage"/>
-      <button class="button-flat button-fullscreen" @click="toggleFullscreen"/>
+      <button class="button-flat button-refresh" @click="refreshPage" />
+      <button class="button-flat button-fullscreen" @click="toggleFullscreen" />
       <button class="button-flat button-close" />
     </div>
   </header>
@@ -84,10 +84,10 @@ const toggleFullscreen = () => {
     </aside>
     <main>
       <section class="graph-main">
-        <MainChart/>
+        <MainChart />
       </section>
       <section class="graph-device">
-        <DeviceChart/>
+        <DeviceChart />
       </section>
     </main>
   </div>
@@ -107,39 +107,46 @@ header.global {
   flex-direction: row;
   align-items: center;
   background-color: var(--color-background-soft);
-  border-bottom:1px solid #DDD;
+  border-bottom: 1px solid #DDD;
 
-  .icon-app{
+  .icon-app {
     margin-left: 1rem;
-    width:1.2rem;
-    height:1.2rem;
-    img{
-      width:100%;
-      height:100%;
+    width: 1.2rem;
+    height: 1.2rem;
+
+    img {
+      width: 100%;
+      height: 100%;
     }
   }
 
   h1 {
     font-size: 1rem;
     padding: 0.5rem;
-    margin:0 0.2rem;
+    margin: 0 0.2rem;
   }
-  .version, .attension{
-    margin:0 0.2rem;
+
+  .version,
+  .attension {
+    margin: 0 0.2rem;
   }
-  .blank{
-    flex:1;
+
+  .blank {
+    flex: 1;
   }
-  .button-refresh{
-    margin-left:.5rem;
+
+  .button-refresh {
+    margin-left: .5rem;
     background-image: var(--icon-refresh);
   }
-  .button-fullscreen{
-    margin-left:.5rem;
+
+  .button-fullscreen {
+    margin-left: .5rem;
     background-image: var(--icon-fullscreen);
   }
-  .button-close{
-    margin-left:.5rem;
+
+  .button-close {
+    margin-left: .5rem;
     background-image: var(--icon-close);
   }
 }
@@ -150,7 +157,7 @@ footer.global {
   justify-content: space-between;
   align-items: center;
   background-color: var(--color-background-soft);
-  border-top:1px solid #DDD;
+  border-top: 1px solid #DDD;
 
   .status-bar {
     display: flex;
@@ -158,6 +165,7 @@ footer.global {
     justify-content: space-between;
     align-items: center;
     padding-left: 0.5rem;
+
     span {
       display: block;
       font-size: .9rem;
@@ -190,10 +198,17 @@ footer.global {
     flex-direction: column;
     padding: 0.5rem;
     background-color: #fafafa;
-    border-right:1px solid #DDD;
+    border-right: 1px solid #DDD;
 
-    section {
-      flex: 1;
+    section{
+    }
+
+    section.selector-train {
+      flex: 2;
+    }
+
+    section.selector-cut {
+      flex: 3;
     }
 
     section.selector-date {
@@ -218,13 +233,12 @@ footer.global {
     height: 100%;
 
     .graph-main {
-      flex:2;
+      flex: 2;
     }
 
-    .graph-device{
-      flex:1;
-      max-height:40rem;
+    .graph-device {
+      flex: 1;
+      max-height: 40rem;
     }
   }
-}
-</style>
+}</style>

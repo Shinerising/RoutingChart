@@ -4,52 +4,65 @@ import VChart from "vue-echarts";
 import type { EChartsOption } from "echarts";
 import DeviceVector from '../controls/DeviceVector.vue';
 
-const legend = [{
-      name: '占用',
-      color: 'red'
-    }, {
-      name: '出清',
-      color: 'blue'
-    }, {
-      name: '控岔',
-      color: 'orange'
-    }, {
-      name: '锁闭',
-      color: 'yellow'
-    }, {
-      name: '解锁',
-      color: 'cyan'
-    }, {
-      name: '开放',
-      color: 'green'
-    }, {
-      name: '关闭',
-      color: 'darkred'
-    }, {
-      name: '入口速度',
-      color: 'lightgreen'
-    },{
-      name: '出口速度',
-      color: 'skyblue'
-    }];
+const legend = ref<{
+  name: string,
+  color: string,
+  hidden?: boolean
+}[]>([{
+  name: '占用',
+  color: 'red'
+}, {
+  name: '出清',
+  color: 'blue'
+}, {
+  name: '控岔',
+  color: 'orange'
+}, {
+  name: '锁闭',
+  color: 'yellow'
+}, {
+  name: '解锁',
+  color: 'cyan'
+}, {
+  name: '开放',
+  color: 'green'
+}, {
+  name: '关闭',
+  color: 'darkred'
+}, {
+  name: '进入时间',
+  color: 'darkgreen'
+}, {
+  name: '出清时间',
+  color: 'darkorange'
+}, {
+  name: '入口速度',
+  color: 'lightgreen'
+}, {
+  name: '出口速度',
+  color: 'skyblue'
+}]);
 
-const deviceList:{name:string, type: 'section' | 'switch' | 'switch_reverse' | 'retarder' | ''}[] = [
-  {name: '03G', type: 'section'},
-  {name: '602', type: 'switch_reverse'},
-  {name: '608', type: 'switch_reverse'},
-  {name: 'J11', type: 'retarder'},
-  {name: '610', type: 'switch_reverse'},
-  {name: 'J22', type: 'retarder'},
-  {name: '624', type: 'switch_reverse'},
-  {name: '626', type: 'switch'},
-  {name: '7G', type: 'section'},
-  {name: 'SQ7', type: 'section'},
-  {name: 'J307', type: 'retarder'},
-  {name: '7', type: 'section'},
-  {name:'', type: ''}
+const distanceList = [[0,1],[100,2],[200,2],[300,3]]
+
+const deviceList: { name: string, type: 'section' | 'switch' | 'switch_reverse' | 'retarder' | '' }[] = [
+  { name: '03G', type: 'section' },
+  { name: '602', type: 'switch_reverse' },
+  { name: '608', type: 'switch_reverse' },
+  { name: 'J11', type: 'retarder' },
+  { name: '610', type: 'switch_reverse' },
+  { name: 'J22', type: 'retarder' },
+  { name: '624', type: 'switch_reverse' },
+  { name: '626', type: 'switch' },
+  { name: '7G', type: 'section' },
+  { name: 'SQ7', type: 'section' },
+  { name: 'J307', type: 'retarder' },
+  { name: '7', type: 'section' },
+  { name: '', type: '' }
 ];
 
 const xAxis = deviceList.map(item => item.name);
+const occupyData = [0, 2, 0, 0, 11, 0, 20, 25, 0, 0, 0, 0, 0];
 const speedInData = [0, 14.33, 0, 18.99, 11.34, 10.99, 19.13, 14.35, 16.81, 0, 18.3, 0, 0];
 const speedOutData = [0, 14.28, 0, 14.20, 10.28, 8.28, 16.48, 10.99, 16.77, 0, 5.5, 0, 0];
 const timeInData = [0, 12, 0, 17, 20, 23, 26, 27, 30, 0, 46, 0, 0];
@@ -62,7 +75,7 @@ const timeInGraphData = timeInData.reduce(
     }
     return acc;
   },
-  [[0,0]] as [number, number][]
+  [[0, 0]] as [number, number][]
 );
 const timeOutGraphData = timeOutData.reduce(
   (acc, cur, idx) => {
@@ -71,7 +84,7 @@ const timeOutGraphData = timeOutData.reduce(
     }
     return acc;
   },
-  [[0,0]] as [number, number][]
+  [[0, 0]] as [number, number][]
 );
 const speedInGraphData = speedInData.reduce(
   (acc, cur, idx) => {
@@ -93,144 +106,186 @@ const speedOutGraphData = speedOutData.reduce(
 );
 
 const chartOption = {
-    grid:{
-      left: 84,
-      right: 0,
-      top: 0,
-      bottom: 0
+  grid: {
+    left: 84,
+    right: 0,
+    top: 0,
+    bottom: 0
+  },
+  xAxis: [{
+    type: "category",
+    splitLine: {
+      show: true,
     },
-    xAxis: [{
-      type: "category",
-      splitLine: {
-        show: true,
-      },
+    minorSplitLine: {
+      show: true,
+    },
+    data: xAxis
+  },
+  {
+    type: "value",
+    min: 0,
+    max: xAxis.length,
+    splitLine: {
+      show: false,
+    },
+    minorSplitLine: {
+      show: false,
+    },
+    axisTick: {
+      show: false,
+    },
+  }],
+  yAxis: [
+    {
+      name: "速度",
+      type: "value",
+      max: 20,
+      min: 0,
       minorSplitLine: {
         show: true,
       },
-      data: xAxis
+      axisTick: {
+        show: false,
+      },
+      axisLine: {
+        show: false,
+      },
+      axisLabel: {
+        showMaxLabel: false,
+        showMinLabel: false,
+        formatter: (value: number) => value.toFixed(1),
+      },
     },
     {
+      name: "时间",
       type: "value",
+      max: 80,
       min: 0,
-      max: xAxis.length,
-      splitLine: {
-        show: false,
+      maxInterval: 10,
+      alignTicks: true,
+      axisLabel: {
+        showMaxLabel: false,
+        showMinLabel: false,
+        inside: true,
+        formatter: (value: number) => value.toFixed(0),
       },
-      minorSplitLine: {
+    },
+  ],
+  series: [
+    {
+      type: "pictorialBar",
+      name: "占用",
+      label: {
+        show: true,
+        position: 'insideTop'
+      },
+      barCategoryGap: '0%',
+      symbol: 'rect',
+      symbolPosition: 'end',
+      symbolSize: ['100%', 2],
+      symbolOffset: [0, '-100%'],
+      color: legend.value[0].color,
+      data: timeInData.map(item => item ? item : '-'),
+      barGap: '-100%',
+      yAxisIndex: 1,
+    },
+    {
+      type: "pictorialBar",
+      name: "出清",
+      label: {
+        show: true,
+        position: 'top',
+      },
+      barCategoryGap: '0%',
+      symbol: 'rect',
+      symbolPosition: 'end',
+      symbolSize: ['100%', 2],
+      symbolOffset: [0, '-100%'],
+      color: legend.value[1].color,
+      data: timeOutData.map(item => item ? item : '-'),
+      yAxisIndex: 1,
+    },
+    {
+      type: "pictorialBar",
+      name: "锁闭",
+      label: {
         show: false,
+        position: 'top',
+      },
+      barCategoryGap: '0%',
+      symbol: 'rect',
+      symbolPosition: 'end',
+      symbolSize: ['100%', 2],
+      symbolOffset: [0, '-100%'],
+      color: legend.value[3].color,
+      data: occupyData.map(item => item ? item : '-'),
+      yAxisIndex: 1,
+    },
+    {
+      type: "line",
+      name: "入口时间",
+      data: timeInGraphData,
+      xAxisIndex: 1,
+      smooth: true,
+      symbol: 'none',
+      yAxisIndex: 1,
+      color: legend.value[7].color,
+      endLabel: {
+        show: true,
+        formatter: () => '进入时间'
       }
-    }],
-    yAxis: [
-      {
-        name: "速度",
-        type: "value",
-        max: 20,
-        min: 0,
-        axisLabel: {
-          showMaxLabel: false,
-          showMinLabel: false,
-          formatter: (value: number) => value.toFixed(1),
-        },
-      },
-      {
-        name: "时间",
-        type: "value",
-        max: 80,
-        min: 0,
-        maxInterval: 10,
-        alignTicks: true,
-        axisLabel: {
-          showMaxLabel: false,
-          showMinLabel: false,
-          inside: true,
-          formatter: (value: number) => value.toFixed(0),
-        },
-      },
-    ],
-    series: [
-      {
-        type: "pictorialBar",
-        name: "出清时间",
-        label:{
-          show:true,
-          position: 'top',
-        },
-        barCategoryGap: '0%',
-        symbol: 'rect',
-        symbolPosition: 'end',
-        symbolSize: ['100%', 2],
-        symbolOffset: [0, '-100%'],
-        data: timeOutData.map(item => item ? item : '-'),
-        yAxisIndex: 1,
-      },
-      {
-        type: "pictorialBar",
-        name: "进入时间",
-        label:{
-          show:true,
-          position: 'insideTop'
-        },
-        barCategoryGap: '0%',
-        symbol: 'rect',
-        symbolPosition: 'end',
-        symbolSize: ['100%', 2],
-        symbolOffset: [0, '-100%'],
-        data: timeInData.map(item => item ? item : '-'),
-        barGap: '-100%',
-        yAxisIndex: 1,
-      },
-      {
-        type: "line",
-        name: "入口时间",
-        data: timeInGraphData,
-        xAxisIndex: 1,
-        smooth: true,
-        symbol: 'none',
-        yAxisIndex: 1,
-        endLabel: {
-          show: true,
-          formatter: () => '入口时间'
-        }
-      },
-      {
-        type: "line",
-        name: "出清时间",
-        data: timeOutGraphData,
-        xAxisIndex: 1,
-        smooth: true,
-        symbol: 'none',
-        yAxisIndex: 1,
-        endLabel: {
-          show: true,
-          formatter: () => '出清时间'
-        }
-      },
-      {
-        type: "line",
-        name: "入口速度",
-        data: speedInGraphData,
-        xAxisIndex: 1,
-        smooth: true,
-        symbol: 'none',
-        endLabel: {
-          show: true,
-          formatter: () => '入口速度'
-        }
-      },
-      {
-        type: "line",
-        name: "出口速度",
-        data: speedOutGraphData,
-        xAxisIndex: 1,
-        smooth: true,
-        symbol: 'none',
-        endLabel: {
-          show: true,
-          formatter: () => '出口速度'
-        }
-      },
-    ],
-  } satisfies EChartsOption;
+    },
+    {
+      type: "line",
+      name: "出清时间",
+      data: timeOutGraphData,
+      xAxisIndex: 1,
+      smooth: true,
+      symbol: 'none',
+      yAxisIndex: 1,
+      color: legend.value[8].color,
+      endLabel: {
+        show: true,
+        formatter: () => '出清时间'
+      }
+    },
+    {
+      type: "line",
+      name: "入口速度",
+      data: speedInGraphData,
+      xAxisIndex: 1,
+      smooth: true,
+      symbol: 'none',
+      color: legend.value[9].color,
+      endLabel: {
+        show: true,
+        formatter: () => '入口速度'
+      }
+    },
+    {
+      type: "line",
+      name: "出口速度",
+      data: speedOutGraphData,
+      xAxisIndex: 1,
+      smooth: true,
+      symbol: 'none',
+      color: legend.value[10].color,
+      endLabel: {
+        show: true,
+        formatter: () => '出口速度'
+      }
+    },
+  ],
+} satisfies EChartsOption;
+
+const toggleLegend = (item: {
+  name: string,
+  color: string,
+  hidden?: boolean
+}) => {
+  item.hidden = !item.hidden;
+};
 </script>
 
 <template>
@@ -244,13 +299,24 @@ const chartOption = {
           <div class="chart-row slope-design">
             <div class="row-label">设计坡度
             </div>
+            <div class="row-content">
+            </div>
           </div>
           <div class="chart-row slope-caculate">
             <div class="row-label">折算坡度
             </div>
+            <div class="row-content">
+            </div>
           </div>
           <div class="chart-row distance">
             <div class="row-label">百米标
+            </div>
+            <div class="row-content">
+              <ul>
+                <li v-for="(item, i) in distanceList" :key="i" :style="{ flex: item[1] }">
+                  <span>{{ item[0] }}</span>
+                </li>
+              </ul>
             </div>
           </div>
           <div class="chart-row device">
@@ -275,7 +341,8 @@ const chartOption = {
       <div class="legend">
         <ul class="group">
           <li v-for="(item, i) in legend" :key="i">
-            <label :style="{ color: item.color }">{{ item.name }}</label>
+            <label :style="{ color: item.color }" :class="item.hidden ? 'hidden' : ''" @click="toggleLegend(item)">{{
+              item.name }}</label>
           </li>
         </ul>
       </div>
@@ -298,42 +365,75 @@ const chartOption = {
   .chart-container {
     height: 100%;
     padding: 1rem;
-    .chart{
+
+    .chart {
       height: 100%;
     }
   }
 }
-.chart{
-    display:flex;
-    flex-direction: column;
-  .chart-row{
-    display:flex;
+
+.chart {
+  display: flex;
+  flex-direction: column;
+
+  .chart-row {
+    display: flex;
     flex-direction: row;
     align-items: center;
-    border:1px solid #EEE;
-    border-top:none;
-    .row-label{
+    border: 1px solid #EEE;
+    border-top: none;
+
+    .row-label {
       width: 6rem;
       padding: 0 .5rem;
       text-align: right;
     }
-    .row-content{
-      flex:1;
-      border-left:1px solid #EEE;
-      height:3rem;
-      ul{
-        display:flex;
+
+    .row-content {
+      flex: 1;
+      border-left: 1px solid #EEE;
+      height: 2rem;
+
+      ul {
+        display: flex;
         flex-direction: row;
         height: 100%;
-        li{
-          flex:1;
+
+        li {
+          flex: 1;
         }
       }
     }
   }
-  .chart-row.vchart{
-    flex:1;
-    border-top:1px solid #EEE;
+
+  .chart-row.vchart {
+    flex: 1;
+    border-top: 1px solid #EEE;
+  }
+
+  .chart-row.device .row-content {
+    height: 3rem;
+  }
+
+  .chart-row.distance .row-content{
+    ul{
+      display:flex;
+      li{
+        margin-top: .8rem;
+        margin-bottom: .4rem;
+        border-bottom:1px solid #AAA;
+        border-right:1px solid #AAA;
+        span{
+          display:block;
+          font-size: .8rem;
+          margin-left: .2rem;
+          margin-top: -.5rem;
+        }
+      }
+      li:last-child{
+        border-right:0;
+      }
+    }
   }
 }
 
@@ -347,7 +447,7 @@ footer {
   border-radius: 0 0 .5rem .5rem;
 
   .controls {
-    flex: none;
+    flex: 1;
     padding: .25rem;
 
     button {
@@ -358,13 +458,12 @@ footer {
   .legend {
     overflow: hidden;
     margin-left: 1rem;
-    flex: 1;
     font-size: .9rem;
 
     ul {
       display: flex;
       flex-direction: row;
-        align-items: center;
+      align-items: center;
     }
 
     .group {
@@ -375,6 +474,12 @@ footer {
       label {
         font-weight: bold;
         color: red;
+        cursor: pointer;
+      }
+
+      label.hidden {
+        filter: grayscale(100%);
+        opacity: .75;
       }
 
       label::before {
@@ -384,11 +489,10 @@ footer {
         margin-right: .5rem;
         border-radius: .3rem;
         vertical-align: text-top;
-        display:inline-block;
+        display: inline-block;
         background: currentColor;
       }
     }
   }
 }
-
 </style>
