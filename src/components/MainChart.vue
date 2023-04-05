@@ -454,7 +454,7 @@ const toggleLegend = (item: {
 .sheet {
   flex: 1;
   border: 1px solid #ccc;
-  border-radius: .5rem .5rem 0 0;
+  border-radius: .8rem .8rem 0 0;
 
   .chart-container {
     height: 100%;
@@ -599,7 +599,7 @@ footer {
   background: #F8F8F8;
   border: 1px solid #ccc;
   border-top: 0;
-  border-radius: 0 0 .5rem .5rem;
+  border-radius: 0 0 .8rem .8rem;
 
   .controls {
     flex: 1;

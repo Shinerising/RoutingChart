@@ -51,6 +51,7 @@ button {
   font-family: inherit;
   background-color: #ECEFF1;
   cursor: pointer;
+  user-select: none;
   transition: border-color 0.25s, background-color 0.25s;
 }
 button:hover {
@@ -136,6 +137,7 @@ header.header-section::after{
 button.button-flat{
   display:inline-block;
   border:none;
+  outline: none;
   border-radius: 0;
   width: 2.4em;
   height: 2.4em;

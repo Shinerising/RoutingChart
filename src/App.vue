@@ -231,11 +231,11 @@ footer.global {
     height: 100%;
 
     .graph-main {
-      flex: 2.2;
+      flex: 10;
     }
 
     .graph-device {
-      flex: 1;
+      flex: 5;
       max-height: 40rem;
     }
   }
