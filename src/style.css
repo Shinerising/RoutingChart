@@ -44,17 +44,18 @@ a:hover {
 button {
   color: var(--color-text);
   border-radius: .5em;
-  border: 1px solid transparent;
+  border: 1px solid #90A4AE;
   padding: .5em .8em;
   font-size: .9em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #DADADA;
+  background-color: #ECEFF1;
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: border-color 0.25s, background-color 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+  background-color: #FAFAFA;
+  border-color: #546E7A;
 }
 button:focus,
 button:focus-visible {
@@ -73,7 +74,7 @@ input[type="checkbox"] {
 }
 
 input[type="checkbox"]:checked {
-  background-color: var(--color-text-hover);
+  background-color: #1E88E5;
   background-image: var(--icon-check);
   background-size: contain;
   background-repeat: no-repeat;
@@ -138,7 +139,7 @@ button.button-flat{
   border-radius: 0;
   width: 2.4em;
   height: 2.4em;
-  opacity: .6;
+  opacity: .8;
   background-color:transparent;
   background-size: 80%;
   background-repeat: no-repeat;
@@ -146,8 +147,10 @@ button.button-flat{
 }
 
 button.button-flat:hover{
-  background-color:#DADADA;
+  background-color:rgba(0,0,0,.4);
+  opacity: 1;
 }
+
 .icon-previous, .icon-next {
   white-space: nowrap;
   overflow: hidden;
@@ -158,9 +161,11 @@ button.button-flat:hover{
   background-repeat: no-repeat;
   background-position: center;
 }
+
 .icon-previous{
   background-image: var(--icon-previous);
 }
+
 .icon-next{
   background-image: var(--icon-next);
 }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, provide } from 'vue'
+import { provide } from 'vue'
 import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
 import {
@@ -106,13 +106,14 @@ header.global {
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: var(--color-background-soft);
+  background-color: #1565C0;
+  color:white;
   border-bottom: 1px solid #DDD;
 
   .icon-app {
     margin-left: 1rem;
-    width: 1.2rem;
-    height: 1.2rem;
+    width: 1.4rem;
+    height: 1.4rem;
 
     img {
       width: 100%;
@@ -156,7 +157,7 @@ footer.global {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  background-color: var(--color-background-soft);
+  background-color: #ECEFF1;
   border-top: 1px solid #DDD;
 
   .status-bar {
@@ -200,9 +201,6 @@ footer.global {
     background-color: #fafafa;
     border-right: 1px solid #DDD;
 
-    section{
-    }
-
     section.selector-train {
       flex: 2;
     }
@@ -233,7 +231,7 @@ footer.global {
     height: 100%;
 
     .graph-main {
-      flex: 2;
+      flex: 2.2;
     }
 
     .graph-device {

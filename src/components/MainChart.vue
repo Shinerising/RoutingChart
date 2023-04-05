@@ -10,40 +10,92 @@ const legend = ref<{
   hidden?: boolean
 }[]>([{
   name: '占用',
-  color: 'red'
+  color: '#F44336'
 }, {
   name: '出清',
-  color: 'blue'
+  color: '#1565C0'
 }, {
   name: '控岔',
-  color: 'orange'
+  color: '#FF8F00'
 }, {
   name: '锁闭',
-  color: 'yellow'
+  color: '#FBC02D'
 }, {
   name: '解锁',
-  color: 'cyan'
+  color: '#039BE5'
 }, {
   name: '开放',
-  color: 'green'
+  color: '#43A047'
 }, {
   name: '关闭',
-  color: 'darkred'
+  color: '#880E4F'
 }, {
-  name: '进入时间',
-  color: 'darkgreen'
+  name: '入口时间',
+  color: '#00897B'
 }, {
   name: '出清时间',
-  color: 'darkorange'
+  color: '#F4511E'
 }, {
   name: '入口速度',
-  color: 'lightgreen'
+  color: '#8BC34A'
 }, {
   name: '出口速度',
-  color: 'skyblue'
+  color: '#2196F3'
 }]);
 
-const distanceList = [[0,1],[100,2],[200,2],[300,3]]
+const distanceList = [['0', 1], ['100', 2], ['200', 2], ['300', 3]];
+const slopeDesignList = [{
+  width: 30,
+  climb: false,
+  value: [30, 45],
+  empty: false
+}, {
+  width: 54,
+  climb: false,
+  value: [54, 11.2],
+  empty: false
+}, {
+  width: 113,
+  climb: false,
+  value: [113.5, 9.0],
+  empty: false
+}, {
+  width: 82,
+  climb: false,
+  value: [82, 2.1],
+  empty: false
+}, {
+  width: 84,
+  climb: false,
+  value: [84, 1.2],
+  empty: false
+}];
+const slopeCaculateList = [{
+  width: 30,
+  climb: false,
+  value: [30, 43.6],
+  empty: false
+}, {
+  width: 54,
+  climb: false,
+  value: [54, 8.9],
+  empty: false
+}, {
+  width: 113,
+  climb: false,
+  value: [113.5, 1.7],
+  empty: false
+}, {
+  width: 82,
+  climb: true,
+  value: [82, -0.7],
+  empty: false
+}, {
+  width: 84,
+  climb: true,
+  value: [84, -0.5],
+  empty: false
+}];
 
 const deviceList: { name: string, type: 'section' | 'switch' | 'switch_reverse' | 'retarder' | '' }[] = [
   { name: '03G', type: 'section' },
@@ -105,7 +157,7 @@ const speedOutGraphData = speedOutData.reduce(
   [] as [number, number][]
 );
 
-const chartOption = {
+const chartOption = ref({
   grid: {
     left: 84,
     right: 0,
@@ -120,6 +172,9 @@ const chartOption = {
     minorSplitLine: {
       show: true,
     },
+    axisLine: {
+      show: false,
+    },
     data: xAxis
   },
   {
@@ -130,6 +185,9 @@ const chartOption = {
       show: false,
     },
     minorSplitLine: {
+      show: false,
+    },
+    axisLine: {
       show: false,
     },
     axisTick: {
@@ -255,7 +313,7 @@ const chartOption = {
       name: "入口速度",
       data: speedInGraphData,
       xAxisIndex: 1,
-      smooth: true,
+      smooth: false,
       symbol: 'none',
       color: legend.value[9].color,
       endLabel: {
@@ -268,7 +326,7 @@ const chartOption = {
       name: "出口速度",
       data: speedOutGraphData,
       xAxisIndex: 1,
-      smooth: true,
+      smooth: false,
       symbol: 'none',
       color: legend.value[10].color,
       endLabel: {
@@ -277,7 +335,9 @@ const chartOption = {
       }
     },
   ],
-} satisfies EChartsOption;
+} satisfies EChartsOption);
+
+const backOptions = [] as { name: string, data: [number, number][] | (number | '-')[] }[];
 
 const toggleLegend = (item: {
   name: string,
@@ -285,6 +345,22 @@ const toggleLegend = (item: {
   hidden?: boolean
 }) => {
   item.hidden = !item.hidden;
+  if (item.hidden) {
+    const target = chartOption.value.series.find(s => s.name === item.name);
+    if (target) {
+      backOptions.push({ name: item.name, data: target.data });
+      target.data = [];
+    }
+  } else {
+    const target = chartOption.value.series.find(s => s.name === item.name);
+    if (target) {
+      const back = backOptions.find(s => s.name === item.name);
+      if (back) {
+        target.data = back.data;
+        backOptions.splice(backOptions.indexOf(back), 1);
+      }
+    }
+  }
 };
 </script>
 
@@ -300,12 +376,30 @@ const toggleLegend = (item: {
             <div class="row-label">设计坡度
             </div>
             <div class="row-content">
+              <ul>
+                <li v-for="(item, i) in slopeDesignList" :key="i" :class="item.climb ? 'climb' : ''" :style="{ flex: item.width }">
+                  <svg viewBox="0 0 50 20" preserveAspectRatio="none">
+                    <line x1="0" y1="0" x2="50" y2="20" stroke="#1A237E" stroke-width="0.5" />
+                  </svg>
+                  <span class="number">{{ item.value[0].toFixed(1) }}</span>
+                  <span class="number">{{ item.value[1].toFixed(1) }}</span>
+                </li>
+              </ul>
             </div>
           </div>
           <div class="chart-row slope-caculate">
             <div class="row-label">折算坡度
             </div>
             <div class="row-content">
+              <ul>
+                <li v-for="(item, i) in slopeCaculateList" :key="i" :class="item.climb ? 'climb' : ''" :style="{ flex: item.width }">
+                  <svg viewBox="0 0 50 20" preserveAspectRatio="none">
+                    <line x1="0" y1="0" x2="50" y2="20" stroke="#1A237E" stroke-width="0.5" />
+                  </svg>
+                  <span class="number">{{ item.value[0].toFixed(1) }}</span>
+                  <span class="number">{{ item.value[1].toFixed(1) }}</span>
+                </li>
+              </ul>
             </div>
           </div>
           <div class="chart-row distance">
@@ -415,23 +509,84 @@ const toggleLegend = (item: {
     height: 3rem;
   }
 
-  .chart-row.distance .row-content{
-    ul{
-      display:flex;
-      li{
+  .chart-row.distance .row-content {
+    ul {
+      display: flex;
+
+      li {
         margin-top: .8rem;
         margin-bottom: .4rem;
-        border-bottom:1px solid #AAA;
-        border-right:1px solid #AAA;
-        span{
-          display:block;
+        border-bottom: 1px solid #AAA;
+        border-right: 1px solid #AAA;
+
+        span {
+          display: block;
           font-size: .8rem;
           margin-left: .2rem;
           margin-top: -.5rem;
         }
       }
-      li:last-child{
-        border-right:0;
+
+      li:last-child {
+        border-right: 0;
+      }
+    }
+  }
+
+  .chart-row.slope-design .row-content,
+  .chart-row.slope-caculate .row-content {
+    ul {
+      display: flex;
+
+      li {
+        position: relative;
+        border-right: 1px solid #AAA;
+
+        svg {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+        }
+
+        span {
+          position: absolute;
+          display: block;
+          font-size: .8rem;
+          margin: .1rem .2rem;
+          left: 0;
+          bottom: 0;
+        }
+
+        span:last-child {
+          left: auto;
+          right: 0;
+          top: 0;
+          bottom: auto;
+        }
+      }
+
+      li.climb{
+        svg {
+          transform: scale(1, -1);
+        }
+
+        span {
+          left: auto;
+          top: auto;
+          right: 0;
+          bottom: 0;
+        }
+
+        span:last-child {
+          right: auto;
+          left: 0;
+          top: 0;
+          bottom: auto;
+        }
+      }
+
+      li:last-child {
+        border-right: 0;
       }
     }
   }
@@ -494,5 +649,4 @@ footer {
       }
     }
   }
-}
-</style>
+}</style>

@@ -7,10 +7,10 @@ const legend = [{
   list: [
     {
       name: '占用',
-      color: 'red'
+      color: '#F44336'
     }, {
       name: '出清',
-      color: 'yellow'
+      color: '#FBC02D'
     }
   ]
 }, {
@@ -18,10 +18,10 @@ const legend = [{
   list: [
     {
       name: '手动',
-      color: 'red'
+      color: '#F44336'
     }, {
       name: '自动',
-      color: 'yellow'
+      color: '#FBC02D'
     }
   ]
 }, {
@@ -29,16 +29,16 @@ const legend = [{
   list: [
     {
       name: '双台缓解',
-      color: 'lightgreen'
+      color: '#43A047'
     }, {
       name: '前台制动',
-      color: 'lightpink'
+      color: '#F48FB1'
     }, {
       name: '后台制动',
-      color: 'pink'
+      color: '#C2185B'
     }, {
       name: '双台制动',
-      color: 'red'
+      color: '#F44336'
     }
   ]
 }, {
@@ -46,16 +46,16 @@ const legend = [{
   list: [
     {
       name: '缓表',
-      color: 'yellow'
+      color: '#FBC02D'
     }, {
       name: '制表',
-      color: 'red'
+      color: '#F44336'
     }, {
       name: '双有',
-      color: 'blue'
+      color: '#1565C0'
     }, {
       name: '双无',
-      color: 'lightgrey'
+      color: '#D7CCC8'
     }
   ]
 }];
@@ -232,7 +232,7 @@ const chartOption = {
       symbolOffset: [1, 0],
       itemStyle: {
         color: (params: unknown) => {
-          const [x, y, value] = (params as { value: [number, number, number] }).value;
+          const [, y, value] = (params as { value: [number, number, number] }).value;
           return legend[y].list[value].color;
         }
       },
@@ -333,6 +333,7 @@ const chartOption = {
     flex: 1;
     min-width: 14rem;
     padding: .5rem 0;
+    font-size: .9rem;
     border-right: 1px solid #ccc;
 
     ul {

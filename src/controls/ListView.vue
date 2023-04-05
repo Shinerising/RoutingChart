@@ -77,7 +77,7 @@ tr:last-of-type td:last-of-type {
   border-bottom-right-radius: 0.5rem;
 }
 tr.selected td{
-  background-color: var(--color-text-highlight);
+  background-color: #1E88E5;
   color: white;
 }
 </style>
