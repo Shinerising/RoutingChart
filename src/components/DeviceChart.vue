@@ -163,12 +163,12 @@ const chartOption = {
             name: string;
           }
         ];
-        const getAction = (x:number,y:number) => legend[x].list[y].name;
+        const getAction = (x: number, y: number) => legend[x].list[y].name;
         return `时间：${format(addSeconds(startTime, data[0].data[0]), "yyyy-MM-dd HH:mm:ss")}
-          <br>${data[0].name}：${data[0].marker}${getAction(0, data[0].data[2])}
-          <br>${data[1].name}：${data[1].marker}${getAction(1, data[1].data[2])}
-          <br>${data[2].name}：${data[2].marker}${getAction(2, data[2].data[2])}
-          <br>${data[3].name}：${data[3].marker}${getAction(3, data[3].data[2])}`;
+          <br>${data[0].marker}${data[0].name}：${getAction(0, data[0].data[2])}
+          <br>${data[1].marker}${data[1].name}：${getAction(1, data[1].data[2])}
+          <br>${data[2].marker}${data[2].name}：${getAction(2, data[2].data[2])}
+          <br>${data[3].marker}${data[3].name}：${getAction(3, data[3].data[2])}`;
       }
       else {
         const data = args as [
@@ -184,8 +184,8 @@ const chartOption = {
           }
         ];
         return `时间：${format(addSeconds(startTime, data[0].data[0]), "yyyy-MM-dd HH:mm:ss")}
-          <br>${data[0].seriesName}：${data[0].marker}${data[0].data[1].toFixed(1)}
-          <br>${data[1].seriesName}：${data[1].marker}${data[1].data[2].toFixed(1)}`;
+          <br>${data[0].marker}${data[0].seriesName}：${data[0].data[1].toFixed(1)}
+          <br>${data[1].marker}${data[1].seriesName}：${data[1].data[2].toFixed(1)}`;
       }
     },
   }],
@@ -343,6 +343,7 @@ const chartOption = {
         &nbsp;
         <button>查看原始事件</button>
       </div>
+      <div class="empty"></div>
       <div class="legend">
         <ul class="group">
           <li v-for="(item, i) in legend" :key="i">
@@ -410,12 +411,16 @@ footer {
   border-radius: 0 0 .8rem .8rem;
 
   .controls {
-    flex: 1;
+    flex: none;
     padding: .25rem;
 
     button {
       margin: .25rem;
     }
+  }
+
+  .empty {
+    flex: 1;
   }
 
   .legend {
@@ -465,6 +470,10 @@ footer {
         font-weight: normal;
         color: black;
         margin: 0 .4rem;
+      }
+      
+      label::after {
+        content: '';
       }
 
       span {

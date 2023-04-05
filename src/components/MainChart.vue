@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { format, addSeconds } from "date-fns";
 import VChart from "vue-echarts";
 import type { EChartsOption } from "echarts";
 import DeviceVector from '../controls/DeviceVector.vue';
@@ -97,6 +98,8 @@ const slopeCaculateList = [{
   empty: false
 }];
 
+const startTime = new Date('2023-02-15 14:50:45');
+
 const deviceList: { name: string, type: 'section' | 'switch' | 'switch_reverse' | 'retarder' | '' }[] = [
   { name: '03G', type: 'section' },
   { name: '602', type: 'switch_reverse' },
@@ -114,15 +117,45 @@ const deviceList: { name: string, type: 'section' | 'switch' | 'switch_reverse' 
 ];
 
 const xAxis = deviceList.map(item => item.name);
-const occupyData = [0, 2, 0, 0, 11, 0, 20, 25, 0, 0, 0, 0, 0];
-const speedInData = [0, 14.33, 0, 18.99, 11.34, 10.99, 19.13, 14.35, 16.81, 0, 18.3, 0, 0];
-const speedOutData = [0, 14.28, 0, 14.20, 10.28, 8.28, 16.48, 10.99, 16.77, 0, 5.5, 0, 0];
-const timeInData = [0, 12, 0, 17, 20, 23, 26, 27, 30, 0, 46, 0, 0];
-const timeOutData = [0, 14, 0, 20, 23, 26, 30, 35, 44, 0, 70, 0, 0];
+const occupyData = [-1, 2, -1, -1, 11, -1, 20, 25, -1, -1, -1, -1, -1];
+const speedInData = [-1, 14.33, -1, 18.99, 11.34, 10.99, 19.13, 14.35, 16.81, -1, 18.3, -1, -1];
+const speedOutData = [-1, 14.28, -1, 14.20, 10.28, 8.28, 16.48, 10.99, 16.77, -1, 5.5, -1, -1];
+const timeInData = [-1, 12, -1, 17, 20, 23, 26, 27, 30, -1, 46, -1, -1];
+const timeOutData = [-1, 14, -1, 20, 23, 26, 30, 35, 44, -1, 70, -1, -1];
+
+const getMarker = (legendName:string) => {
+  return `<span style="display:inline-block;margin-right:4px;border-radius:10px;width:10px;height:10px;background-color:${legend.value.find(item => item.name === legendName)?.color};"></span>`;
+};
+const lineLegend: {
+  marker: string;
+  name: string;
+  data: number[];
+  type: 'speed' | 'time';
+}[] = [{
+  name: '入口时间',
+  type: 'time',
+  data: timeInData,
+  marker: getMarker('入口时间')
+},{
+  name: '出清时间',
+  type: 'time',
+  data: timeOutData,
+  marker: getMarker('出清时间')
+},{
+  name: '入口速度',
+  type: 'speed',
+  data: speedInData,
+  marker: getMarker('入口速度')
+},{
+  name: '出口速度',
+  type: 'speed',
+  data: speedOutData,
+  marker: getMarker('出口速度')
+}];
 
 const timeInGraphData = timeInData.reduce(
   (acc, cur, idx) => {
-    if (cur) {
+    if (cur >= 0) {
       acc.push([idx + 1, cur]);
     }
     return acc;
@@ -131,7 +164,7 @@ const timeInGraphData = timeInData.reduce(
 );
 const timeOutGraphData = timeOutData.reduce(
   (acc, cur, idx) => {
-    if (cur) {
+    if (cur >= 0) {
       acc.push([idx + 1, cur]);
     }
     return acc;
@@ -140,7 +173,7 @@ const timeOutGraphData = timeOutData.reduce(
 );
 const speedInGraphData = speedInData.reduce(
   (acc, cur, idx) => {
-    if (cur) {
+    if (cur >= 0) {
       acc.push([idx, cur]);
     }
     return acc;
@@ -149,7 +182,7 @@ const speedInGraphData = speedInData.reduce(
 );
 const speedOutGraphData = speedOutData.reduce(
   (acc, cur, idx) => {
-    if (cur) {
+    if (cur >= 0) {
       acc.push([idx, cur]);
     }
     return acc;
@@ -164,6 +197,37 @@ const chartOption = ref({
     top: 0,
     bottom: 0
   },
+  tooltip: [{
+    trigger: "axis",
+    axisPointer: {
+      axis: "x",
+    },
+    formatter: (args: unknown) => {
+      const data = args as {
+        data: number | string | [number, number];
+        marker: string;
+        name: string;
+        seriesName: string;
+        dataIndex: number;
+      }[];
+      const index = data[0].dataIndex;
+      let text = `设备名：${data[0].name}`;
+      for (const item of data) {
+        if (typeof item.data === 'string') {
+          text += `<br>${item.marker}${item.seriesName}时间：未知`;
+        }
+        else if (typeof item.data === 'number') {
+          text += `<br>${item.marker}${item.seriesName}时间：${format(addSeconds(startTime, item.data), "HH:mm:ss")}`;
+        }
+      }
+      for (const item of lineLegend) {
+        const value = item.data[index];
+        const str = value < 0 ? '未知' : item.type === 'speed' ? value.toFixed(1) : format(addSeconds(startTime, value), "HH:mm:ss");
+        text += `<br>${item.marker}${item.name}：${str}`;
+      }
+      return text;
+    },
+  }],
   xAxis: [{
     type: "category",
     splitLine: {
@@ -193,6 +257,9 @@ const chartOption = ref({
     axisTick: {
       show: false,
     },
+    axisPointer: {
+      type: 'none',
+    }
   }],
   yAxis: [
     {
@@ -244,7 +311,7 @@ const chartOption = ref({
       symbolSize: ['100%', 2],
       symbolOffset: [0, '-100%'],
       color: legend.value[0].color,
-      data: timeInData.map(item => item ? item : '-'),
+      data: timeInData.map(item => item >= 0 ? item : '-'),
       barGap: '-100%',
       yAxisIndex: 1,
     },
@@ -261,7 +328,7 @@ const chartOption = ref({
       symbolSize: ['100%', 2],
       symbolOffset: [0, '-100%'],
       color: legend.value[1].color,
-      data: timeOutData.map(item => item ? item : '-'),
+      data: timeOutData.map(item => item >= 0 ? item : '-'),
       yAxisIndex: 1,
     },
     {
@@ -277,7 +344,7 @@ const chartOption = ref({
       symbolSize: ['100%', 2],
       symbolOffset: [0, '-100%'],
       color: legend.value[3].color,
-      data: occupyData.map(item => item ? item : '-'),
+      data: occupyData.map(item => item >= 0 ? item : '-'),
       yAxisIndex: 1,
     },
     {
@@ -377,7 +444,8 @@ const toggleLegend = (item: {
             </div>
             <div class="row-content">
               <ul>
-                <li v-for="(item, i) in slopeDesignList" :key="i" :class="item.climb ? 'climb' : ''" :style="{ flex: item.width }">
+                <li v-for="(item, i) in slopeDesignList" :key="i" :class="item.climb ? 'climb' : ''"
+                  :style="{ flex: item.width }">
                   <svg viewBox="0 0 50 20" preserveAspectRatio="none">
                     <line x1="0" y1="0" x2="50" y2="20" stroke="#1A237E" stroke-width="0.5" />
                   </svg>
@@ -392,7 +460,8 @@ const toggleLegend = (item: {
             </div>
             <div class="row-content">
               <ul>
-                <li v-for="(item, i) in slopeCaculateList" :key="i" :class="item.climb ? 'climb' : ''" :style="{ flex: item.width }">
+                <li v-for="(item, i) in slopeCaculateList" :key="i" :class="item.climb ? 'climb' : ''"
+                  :style="{ flex: item.width }">
                   <svg viewBox="0 0 50 20" preserveAspectRatio="none">
                     <line x1="0" y1="0" x2="50" y2="20" stroke="#1A237E" stroke-width="0.5" />
                   </svg>
@@ -432,6 +501,7 @@ const toggleLegend = (item: {
         <button><i class="icon-previous">前进</i></button>
         <button><i class="icon-next">后退</i></button>
       </div>
+      <div class="empty"></div>
       <div class="legend">
         <ul class="group">
           <li v-for="(item, i) in legend" :key="i">
@@ -565,7 +635,7 @@ const toggleLegend = (item: {
         }
       }
 
-      li.climb{
+      li.climb {
         svg {
           transform: scale(1, -1);
         }
@@ -602,12 +672,16 @@ footer {
   border-radius: 0 0 .8rem .8rem;
 
   .controls {
-    flex: 1;
+    flex: none;
     padding: .25rem;
 
     button {
       margin: .25rem;
     }
+  }
+
+  .empty {
+    flex: 1;
   }
 
   .legend {
@@ -649,4 +723,5 @@ footer {
       }
     }
   }
-}</style>
+}
+</style>

@@ -194,6 +194,7 @@ footer.global {
   aside {
     min-width: 18rem;
     max-width: 24rem;
+    flex: 1;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -226,7 +227,7 @@ footer.global {
   main {
     display: flex;
     flex-direction: column;
-    flex: 1;
+    flex: 4;
     padding: 0.5rem;
     height: 100%;
 
