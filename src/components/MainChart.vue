@@ -222,7 +222,7 @@ const chartOption = ref({
       }
       for (const item of lineLegend) {
         const value = item.data[index];
-        const str = value < 0 ? '未知' : item.type === 'speed' ? value.toFixed(1) : format(addSeconds(startTime, value), "HH:mm:ss");
+        const str = value < 0 ? '未知' : item.type === 'speed' ? value.toFixed(2) : format(addSeconds(startTime, value), "HH:mm:ss");
         text += `<br>${item.marker}${item.name}：${str}`;
       }
       return text;

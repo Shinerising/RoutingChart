@@ -184,8 +184,8 @@ const chartOption = {
           }
         ];
         return `时间：${format(addSeconds(startTime, data[0].data[0]), "yyyy-MM-dd HH:mm:ss")}
-          <br>${data[0].marker}${data[0].seriesName}：${data[0].data[1].toFixed(1)}
-          <br>${data[1].marker}${data[1].seriesName}：${data[1].data[2].toFixed(1)}`;
+          <br>${data[0].marker}${data[0].seriesName}：${data[0].data[1].toFixed(2)}
+          <br>${data[1].marker}${data[1].seriesName}：${data[1].data[2].toFixed(2)}`;
       }
     },
   }],
