@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { format, addSeconds } from "date-fns";
 import VChart from "vue-echarts";
 import type { EChartsOption } from "echarts";
 
@@ -70,6 +71,7 @@ const brief = [
   "辆数：0",
   "测长：0",
 ];
+const startTime = new Date('2023-02-15 14:50:45');
 
 const actions = legend.map(item => item.name);
 const actionList = [[{
@@ -136,6 +138,55 @@ const chartOption = {
     trigger: "axis",
     axisPointer: {
       axis: "x",
+    },
+    formatter: (args: unknown) => {
+      if ((args as unknown[]).length > 2) {
+        const data = args as [
+          {
+            data: [number, number, number];
+            marker: string;
+            name: string;
+          },
+          {
+            data: [number, number, number];
+            marker: string;
+            name: string;
+          },
+          {
+            data: [number, number, number];
+            marker: string;
+            name: string;
+          },
+          {
+            data: [number, number, number];
+            marker: string;
+            name: string;
+          }
+        ];
+        const getAction = (x:number,y:number) => legend[x].list[y].name;
+        return `时间：${format(addSeconds(startTime, data[0].data[0]), "yyyy-MM-dd HH:mm:ss")}
+          <br>${data[0].name}：${data[0].marker}${getAction(0, data[0].data[2])}
+          <br>${data[1].name}：${data[1].marker}${getAction(1, data[1].data[2])}
+          <br>${data[2].name}：${data[2].marker}${getAction(2, data[2].data[2])}
+          <br>${data[3].name}：${data[3].marker}${getAction(3, data[3].data[2])}`;
+      }
+      else {
+        const data = args as [
+          {
+            data: [number, number, number];
+            marker: string;
+            seriesName: string;
+          },
+          {
+            data: [number, number, number];
+            marker: string;
+            seriesName: string;
+          }
+        ];
+        return `时间：${format(addSeconds(startTime, data[0].data[0]), "yyyy-MM-dd HH:mm:ss")}
+          <br>${data[0].seriesName}：${data[0].marker}${data[0].data[1].toFixed(1)}
+          <br>${data[1].seriesName}：${data[1].marker}${data[1].data[2].toFixed(1)}`;
+      }
     },
   }],
   xAxis: [
@@ -207,7 +258,7 @@ const chartOption = {
       },
       axisLabel: {
         showMaxLabel: false,
-        formatter: (value: number) => value.toFixed(0),
+        formatter: (value: number) => value.toFixed(1),
       },
       splitLine: {
         show: true,
@@ -424,5 +475,4 @@ footer {
     }
   }
 }
-
 </style>

@@ -10,7 +10,7 @@ const legend = ref<{
   hidden?: boolean
 }[]>([{
   name: '占用',
-  color: '#F44336'
+  color: '#D32F2F'
 }, {
   name: '出清',
   color: '#1565C0'
