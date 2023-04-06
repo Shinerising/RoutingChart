@@ -44,7 +44,7 @@ const legend = ref<{
   color: '#2196F3'
 }]);
 
-const distanceList = [['0', 1], ['100', 2], ['200', 2], ['300', 3]];
+const distanceList = [['0', 350], ['100', 300], ['200', 350], ['300', 300]];
 const slopeDesignList = [{
   width: 30,
   climb: false,
@@ -98,12 +98,12 @@ const slopeCaculateList = [{
   empty: false
 }];
 
-const startTime = new Date('2023-02-15 14:50:45');
+const startTime = new Date('2023-02-15 14:49:57');
 
-const deviceList: { name: string, type: 'section' | 'switch' | 'switch_reverse' | 'retarder' | '' }[] = [
+const deviceList: { name: string, type: 'section' | 'switch' | 'switch_reverse' | 'switch_backward' | 'switch_backward_reverse' | 'retarder' | '' }[] = [
   { name: '03G', type: 'section' },
   { name: '510', type: 'switch_reverse' },
-  { name: '512', type: 'switch_reverse' },
+  { name: '512', type: 'switch_backward_reverse' },
   { name: 'J12', type: 'retarder' },
   { name: '520', type: 'switch_reverse' },
   { name: 'J23', type: 'retarder' },
@@ -120,10 +120,10 @@ const xAxis = deviceList.map(item => item.name);
 const occupyData = [-1, 2, -1, -1, 11, -1, 20, 25, -1, -1, -1, -1, -1];
 const speedInData = [-1, 17.0, -1, 21, 23, 23.2, 18.2, 18.2, 18.7, 20.1, 18.3, -1, -1];
 const speedOutData = [-1, 19.3, -1, 23, 19.2, 19.1, 18.7, 18.8, 18.5, 18.8, 5.5, -1, -1];
-const timeInData = [-1, 12, -1, 17, 20, 23, 26, 27, 30, -1, 46, -1, -1];
+const timeInData = [-1, 12, -1, 17, 20, 23, 26, 27, 30, -1, 48, -1, -1];
 const timeOutData = [-1, 14, -1, 20, 23, 26, 30, 35, 44, -1, 70, -1, -1];
 
-const getMarker = (legendName:string) => {
+const getMarker = (legendName: string) => {
   return `<span style="display:inline-block;margin-right:4px;border-radius:10px;width:10px;height:10px;background-color:${legend.value.find(item => item.name === legendName)?.color};"></span>`;
 };
 const lineLegend: {
@@ -131,22 +131,25 @@ const lineLegend: {
   name: string;
   data: number[];
   type: 'speed' | 'time';
+  hidden?: boolean;
 }[] = [{
   name: '入口时间',
   type: 'time',
   data: timeInData,
+  hidden: true,
   marker: getMarker('入口时间')
-},{
+}, {
   name: '出清时间',
   type: 'time',
   data: timeOutData,
+  hidden: true,
   marker: getMarker('出清时间')
-},{
+}, {
   name: '入口速度',
   type: 'speed',
   data: speedInData,
   marker: getMarker('入口速度')
-},{
+}, {
   name: '出口速度',
   type: 'speed',
   data: speedOutData,
@@ -214,15 +217,18 @@ const chartOption = ref({
       let text = `设备名：${data[0].name}`;
       for (const item of data) {
         if (typeof item.data === 'string') {
-          text += `<br>${item.marker}${item.seriesName}时间：未知`;
+          text += `<br>${item.marker}${item.seriesName}时间：无`;
         }
         else if (typeof item.data === 'number') {
           text += `<br>${item.marker}${item.seriesName}时间：${format(addSeconds(startTime, item.data), "HH:mm:ss")}`;
         }
       }
       for (const item of lineLegend) {
+        if (item.hidden) {
+          continue;
+        }
         const value = item.data[index];
-        const str = value < 0 ? '未知' : item.type === 'speed' ? value.toFixed(2) : format(addSeconds(startTime, value), "HH:mm:ss");
+        const str = value < 0 ? '无' : item.type === 'speed' ? value.toFixed(2) : format(addSeconds(startTime, value), "HH:mm:ss");
         text += `<br>${item.marker}${item.name}：${str}`;
       }
       return text;
@@ -358,7 +364,7 @@ const chartOption = ref({
       color: legend.value[7].color,
       endLabel: {
         show: true,
-        formatter: () => '进入时间'
+        formatter: () => '入口时间'
       }
     },
     {
@@ -455,7 +461,7 @@ const toggleLegend = (item: {
               </ul>
             </div>
           </div>
-          <div class="chart-row slope-caculate">
+          <div class="chart-row slope-caculate" hidden>
             <div class="row-label">折算坡度
             </div>
             <div class="row-content">
@@ -568,6 +574,10 @@ const toggleLegend = (item: {
         }
       }
     }
+  }
+
+  .chart-row[hidden] {
+    display: none;
   }
 
   .chart-row.vchart {

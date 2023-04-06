@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const props = defineProps<{device:{name:string, type: 'section' | 'switch' | 'switch_reverse' | 'retarder' | ''}}>();
+const props = defineProps<{device:{name:string, type: 'section' | 'switch' | 'switch_reverse' | 'switch_backward' | 'switch_backward_reverse' | 'retarder' | ''}}>();
 </script>
 
 <template>
@@ -39,6 +39,12 @@ const props = defineProps<{device:{name:string, type: 'section' | 'switch' | 'sw
   div.switch_reverse{
     background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 48 24" width="48"><path stroke="black" stroke-width="1" d="M0 12l48 0M16 12l16 12"/></svg>');
   }
+  div.switch_backward{
+    background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 48 24" width="48"><path stroke="black" stroke-width="1" d="M0 12l48 0M32 12l-16 -12"/></svg>');
+  }
+  div.switch_backward_reverse{
+    background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 48 24" width="48"><path stroke="black" stroke-width="1" d="M0 12l48 0M32 12l-16 12"/></svg>');
+  }
   div.retarder{
     background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 48 24" width="48"><path fill="white" stroke="black" stroke-width="1" d="M1 9l0 6l46 0l0 -6Z"/></svg>');
   }
@@ -52,6 +58,9 @@ const props = defineProps<{device:{name:string, type: 'section' | 'switch' | 'sw
     bottom: .2em;
   }
   span.switch_reverse{
+    bottom: 2em;
+  }
+  span.switch_backward_reverse{
     bottom: 2em;
   }
   span.retarder{
