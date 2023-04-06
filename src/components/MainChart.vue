@@ -194,6 +194,21 @@ const speedOutGraphData = speedOutData.reduce(
 );
 
 const chartOption = ref({
+  title: [{
+    text: '速度(km/h)',
+    left: 0,
+    padding: 12,
+    textStyle: {
+      fontSize: 12,
+    }
+  }, {
+    text: '时间(秒)',
+    right: 0,
+    padding: 12,
+    textStyle: {
+      fontSize: 12,
+    }
+  }],
   grid: {
     left: 84,
     right: 0,

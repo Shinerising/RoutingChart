@@ -10,6 +10,7 @@ import {
 } from "echarts/charts";
 import {
   GridComponent,
+  TitleComponent,
   TooltipComponent,
   DatasetComponent,
 } from "echarts/components";
@@ -27,6 +28,7 @@ use([
   ScatterChart,
   PictorialBarChart,
   GridComponent,
+  TitleComponent,
   DatasetComponent,
   TooltipComponent,
   CanvasRenderer,
