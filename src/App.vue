@@ -237,7 +237,7 @@ footer.global {
 
     .graph-device {
       flex: 5;
-      max-height: 40rem;
+      max-height: 26rem;
     }
   }
 }</style>

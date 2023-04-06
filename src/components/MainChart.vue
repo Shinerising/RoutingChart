@@ -102,15 +102,15 @@ const startTime = new Date('2023-02-15 14:50:45');
 
 const deviceList: { name: string, type: 'section' | 'switch' | 'switch_reverse' | 'retarder' | '' }[] = [
   { name: '03G', type: 'section' },
-  { name: '602', type: 'switch_reverse' },
-  { name: '608', type: 'switch_reverse' },
-  { name: 'J11', type: 'retarder' },
-  { name: '610', type: 'switch_reverse' },
-  { name: 'J22', type: 'retarder' },
-  { name: '624', type: 'switch_reverse' },
-  { name: '626', type: 'switch' },
-  { name: '7G', type: 'section' },
-  { name: 'SQ7', type: 'section' },
+  { name: '510', type: 'switch_reverse' },
+  { name: '512', type: 'switch_reverse' },
+  { name: 'J12', type: 'retarder' },
+  { name: '520', type: 'switch_reverse' },
+  { name: 'J23', type: 'retarder' },
+  { name: '550', type: 'switch_reverse' },
+  { name: '558', type: 'switch' },
+  { name: '562', type: 'switch' },
+  { name: '23G', type: 'section' },
   { name: 'J307', type: 'retarder' },
   { name: '7', type: 'section' },
   { name: '', type: '' }
@@ -118,8 +118,8 @@ const deviceList: { name: string, type: 'section' | 'switch' | 'switch_reverse' 
 
 const xAxis = deviceList.map(item => item.name);
 const occupyData = [-1, 2, -1, -1, 11, -1, 20, 25, -1, -1, -1, -1, -1];
-const speedInData = [-1, 14.33, -1, 18.99, 11.34, 10.99, 19.13, 14.35, 16.81, -1, 18.3, -1, -1];
-const speedOutData = [-1, 14.28, -1, 14.20, 10.28, 8.28, 16.48, 10.99, 16.77, -1, 5.5, -1, -1];
+const speedInData = [-1, 17.0, -1, 21, 23, 23.2, 18.2, 18.2, 18.7, 20.1, 18.3, -1, -1];
+const speedOutData = [-1, 19.3, -1, 23, 19.2, 19.1, 18.7, 18.8, 18.5, 18.8, 5.5, -1, -1];
 const timeInData = [-1, 12, -1, 17, 20, 23, 26, 27, 30, -1, 46, -1, -1];
 const timeOutData = [-1, 14, -1, 20, 23, 26, 30, 35, 44, -1, 70, -1, -1];
 
@@ -265,7 +265,7 @@ const chartOption = ref({
     {
       name: "速度",
       type: "value",
-      max: 20,
+      max: 30,
       min: 0,
       minorSplitLine: {
         show: true,
