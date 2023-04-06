@@ -324,7 +324,8 @@ const chartOption = ref({
       name: "占用",
       label: {
         show: true,
-        position: 'insideTop'
+        color: legend.value[0].color,
+        position: 'insideTop',
       },
       barCategoryGap: '0%',
       symbol: 'rect',
@@ -341,6 +342,7 @@ const chartOption = ref({
       name: "出清",
       label: {
         show: true,
+        color: legend.value[1].color,
         position: 'top',
       },
       barCategoryGap: '0%',
@@ -357,6 +359,7 @@ const chartOption = ref({
       name: "锁闭",
       label: {
         show: false,
+        color: legend.value[3].color,
         position: 'top',
       },
       barCategoryGap: '0%',
@@ -379,6 +382,8 @@ const chartOption = ref({
       color: legend.value[7].color,
       endLabel: {
         show: true,
+        padding: [4, 8],
+        backgroundColor: 'rgba(255, 255, 255, .8)',
         formatter: () => '入口时间'
       }
     },
@@ -393,6 +398,8 @@ const chartOption = ref({
       color: legend.value[8].color,
       endLabel: {
         show: true,
+        padding: [4, 8],
+        backgroundColor: 'rgba(255, 255, 255, .8)',
         formatter: () => '出清时间'
       }
     },
@@ -406,6 +413,8 @@ const chartOption = ref({
       color: legend.value[9].color,
       endLabel: {
         show: true,
+        padding: [4, 8],
+        backgroundColor: 'rgba(255, 255, 255, .8)',
         formatter: () => '入口速度'
       }
     },
@@ -419,6 +428,8 @@ const chartOption = ref({
       color: legend.value[10].color,
       endLabel: {
         show: true,
+        padding: [4, 8],
+        backgroundColor: 'rgba(255, 255, 255, .8)',
         formatter: () => '出口速度'
       }
     },
