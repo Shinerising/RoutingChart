@@ -54,6 +54,7 @@ td{
 table,
 th,
 td {
+  position:relative;
   padding: 0.3rem 0.5rem;
   border: 1px solid var(--color-border);
   border-collapse: collapse;

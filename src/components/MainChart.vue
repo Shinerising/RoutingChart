@@ -286,7 +286,7 @@ const chartOption = ref({
     {
       name: "速度",
       type: "value",
-      max: 30,
+      max: 25,
       min: 0,
       minorSplitLine: {
         show: true,
@@ -306,9 +306,8 @@ const chartOption = ref({
     {
       name: "时间",
       type: "value",
-      max: 80,
+      max: 75,
       min: 0,
-      maxInterval: 10,
       alignTicks: true,
       axisLabel: {
         showMaxLabel: false,

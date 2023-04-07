@@ -349,7 +349,7 @@ const chartOption = {
           <li v-for="(item, i) in legend" :key="i">
             <label>{{ item.name }}</label>
             <ul class="action">
-              <li v-for="(_item, j) in item.list" :key="j">
+              <li v-for="(_item, j) in item.list.slice(0, 2)" :key="j">
                 <label>{{ _item.name }}</label>
                 <span :style="{ backgroundColor: _item.color }"></span>
               </li>
@@ -435,13 +435,13 @@ footer {
 
     .group {
       li {
-        margin-left: 1rem;
+        margin-left: .5rem;
         align-items: center;
       }
 
       label {
         font-weight: bold;
-        color: red;
+        color: #607D8B;
       }
 
       label::after {
@@ -478,7 +478,9 @@ footer {
 
       span {
         display: block;
-        width: 3.2rem;
+        width:2.4vw;
+        max-width: 3.2rem;
+        min-width: 1.6rem;
         height: .4rem;
       }
     }

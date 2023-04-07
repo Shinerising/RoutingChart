@@ -59,11 +59,3 @@
 
 @media (prefers-color-scheme: dark) {
 }
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  position: relative;
-}

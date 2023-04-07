@@ -15,6 +15,11 @@
   -webkit-text-size-adjust: 100%;
 }
 
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
 a {
   font-weight: 500;
   color: #646cff;
@@ -68,6 +73,7 @@ input[type="checkbox"] {
   display: inline-block;
   width: 1.8em;
   height: 1.8em;
+  margin: 0;
   background-color: #fff;
   border: 1px solid var(--color-border);
   border-radius: .5em;
@@ -98,6 +104,7 @@ select {
 ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 #app {

@@ -26,7 +26,7 @@ const date = ref(Date.now());
 .date-selector{
   display: flex;
   align-items: center;
-  label{
+  > label{
     flex:none;
   }
 }
