@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { provide } from 'vue'
+import { setDefaultOptions } from 'date-fns';
+import { zhCN } from 'date-fns/locale';
 import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
 import {
-  BarChart,
   LineChart,
   ScatterChart,
   PictorialBarChart,
@@ -22,8 +23,9 @@ import TrainSelector from "./components/TrainSelector.vue";
 import MainChart from "./components/MainChart.vue";
 import DeviceChart from "./components/DeviceChart.vue";
 
+setDefaultOptions({ locale: zhCN });
+
 use([
-  BarChart,
   LineChart,
   ScatterChart,
   PictorialBarChart,

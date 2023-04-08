@@ -160,7 +160,7 @@ button.button-flat:hover{
   opacity: 1;
 }
 
-.icon-previous, .icon-next {
+.icon-prev, .icon-next {
   white-space: nowrap;
   overflow: hidden;
   color:transparent;
@@ -171,7 +171,7 @@ button.button-flat:hover{
   background-position: center;
 }
 
-.icon-previous{
+.icon-prev{
   background-image: var(--icon-previous);
 }
 

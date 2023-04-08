@@ -306,7 +306,6 @@ const chartOption = ref({
     {
       name: "时间",
       type: "value",
-      max: 75,
       min: 0,
       alignTicks: true,
       axisLabel: {
@@ -529,15 +528,16 @@ const toggleLegend = (item: {
     </div>
     <footer>
       <div class="controls">
-        <button><i class="icon-previous">前进</i></button>
+        <button><i class="icon-prev">前进</i></button>
         <button><i class="icon-next">后退</i></button>
       </div>
       <div class="empty"></div>
       <div class="legend">
         <ul class="group">
           <li v-for="(item, i) in legend" :key="i">
-            <label :style="{ color: item.color }" :class="item.hidden ? 'hidden' : ''" @click="toggleLegend(item)">{{
-              item.name }}</label>
+            <label :style="{ color: item.color }" :class="item.hidden ? 'hidden' : ''" @click="toggleLegend(item)">
+              <span>{{ item.name }}</span>
+            </label>
           </li>
         </ul>
       </div>
@@ -739,11 +739,12 @@ footer {
         font-weight: bold;
         color: red;
         cursor: pointer;
+        user-select: none;
       }
 
       label.hidden {
         filter: grayscale(100%);
-        opacity: .75;
+        opacity: .6;
       }
 
       label::before {
@@ -751,10 +752,15 @@ footer {
         width: 1.2em;
         height: 1.2em;
         margin-right: .5rem;
-        border-radius: .3rem;
-        vertical-align: text-top;
+        border-radius: 50%;
         display: inline-block;
+        vertical-align: middle;
         background: currentColor;
+      }
+
+      label>span{
+        display: inline-block;
+        vertical-align: middle;
       }
     }
   }

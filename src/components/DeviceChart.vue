@@ -338,7 +338,7 @@ const chartOption = {
     </div>
     <footer>
       <div class="controls">
-        <button><i class="icon-previous">前进</i></button>
+        <button><i class="icon-prev">前进</i></button>
         <button><i class="icon-next">后退</i></button>
         &nbsp;
         <button>查看原始事件</button>
