@@ -1,14 +1,10 @@
 <script setup lang="ts">
-import { provide } from 'vue'
-import { setDefaultOptions } from 'date-fns';
-import { zhCN } from 'date-fns/locale';
+import { provide } from "vue";
+import { setDefaultOptions } from "date-fns";
+import { zhCN } from "date-fns/locale";
 import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
-import {
-  LineChart,
-  ScatterChart,
-  PictorialBarChart,
-} from "echarts/charts";
+import { LineChart, ScatterChart, PictorialBarChart } from "echarts/charts";
 import {
   GridComponent,
   TitleComponent,
@@ -50,7 +46,6 @@ const toggleFullscreen = () => {
     doc.documentElement.requestFullscreen();
   }
 };
-
 </script>
 
 <template>
@@ -110,9 +105,9 @@ header.global {
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: #1565C0;
-  color:white;
-  border-bottom: 1px solid #DDD;
+  background-color: #1565c0;
+  color: white;
+  border-bottom: 1px solid #ddd;
 
   .icon-app {
     margin-left: 1rem;
@@ -141,17 +136,17 @@ header.global {
   }
 
   .button-refresh {
-    margin-left: .5rem;
+    margin-left: 0.5rem;
     background-image: var(--icon-refresh);
   }
 
   .button-fullscreen {
-    margin-left: .5rem;
+    margin-left: 0.5rem;
     background-image: var(--icon-fullscreen);
   }
 
   .button-close {
-    margin-left: .5rem;
+    margin-left: 0.5rem;
     background-image: var(--icon-close);
   }
 }
@@ -161,8 +156,8 @@ footer.global {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  background-color: #ECEFF1;
-  border-top: 1px solid #DDD;
+  background-color: #eceff1;
+  border-top: 1px solid #ddd;
 
   .status-bar {
     display: flex;
@@ -173,7 +168,7 @@ footer.global {
 
     span {
       display: block;
-      font-size: .9rem;
+      font-size: 0.9rem;
       padding: 0.3rem 0.5rem;
     }
   }
@@ -204,7 +199,7 @@ footer.global {
     flex-direction: column;
     padding: 0.5rem;
     background-color: #fafafa;
-    border-right: 1px solid #DDD;
+    border-right: 1px solid #ddd;
 
     section.selector-train {
       flex: 2;
@@ -244,4 +239,5 @@ footer.global {
       max-height: 26rem;
     }
   }
-}</style>
+}
+</style>
