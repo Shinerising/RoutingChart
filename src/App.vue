@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { provide } from "vue";
-import { setDefaultOptions } from "date-fns";
+import { ref, provide, onBeforeMount, onBeforeUnmount } from "vue";
+import { format, setDefaultOptions } from "date-fns";
 import { zhCN } from "date-fns/locale";
 import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
@@ -46,6 +46,17 @@ const toggleFullscreen = () => {
     doc.documentElement.requestFullscreen();
   }
 };
+
+const time = ref(new Date());
+let timer = 0;
+
+onBeforeMount(() => {
+  timer = setInterval(() => (time.value = new Date()), 1000);
+});
+
+onBeforeUnmount(() => {
+  clearInterval(timer);
+});
 </script>
 
 <template>
@@ -93,6 +104,7 @@ const toggleFullscreen = () => {
   <footer class="global">
     <div class="status-bar">
       <span>准备就绪</span>
+      <span>{{ format(time, "yyyy-MM-dd HH:mm:ss") }}</span>
     </div>
     <div class="icon-brand">
       <img src="@/assets/images/crsc.png" alt="brand logo" />
@@ -160,6 +172,7 @@ footer.global {
   border-top: 1px solid #ddd;
 
   .status-bar {
+    flex: auto;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -167,9 +180,14 @@ footer.global {
     padding-left: 0.5rem;
 
     span {
+      flex: 1;
       display: block;
       font-size: 0.9rem;
       padding: 0.3rem 0.5rem;
+      border-right: 1px solid #ddd;
+      &:first-child {
+        flex: 5;
+      }
     }
   }
 
