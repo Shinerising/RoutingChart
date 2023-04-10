@@ -1,18 +1,17 @@
 <script setup lang="ts">
-import { provide } from 'vue'
+import { ref, provide, onBeforeMount, onBeforeUnmount } from "vue";
+import { format, setDefaultOptions } from "date-fns";
+import { zhCN } from "date-fns/locale";
 import { use } from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
-import {
-  BarChart,
-  LineChart,
-  ScatterChart,
-  PictorialBarChart,
-} from "echarts/charts";
+import { LineChart, ScatterChart, PictorialBarChart } from "echarts/charts";
 import {
   GridComponent,
   TitleComponent,
   TooltipComponent,
   DatasetComponent,
+  MarkLineComponent,
+  VisualMapComponent,
 } from "echarts/components";
 import { THEME_KEY } from "vue-echarts";
 import DateSelector from "./components/DateSelector.vue";
@@ -22,8 +21,9 @@ import TrainSelector from "./components/TrainSelector.vue";
 import MainChart from "./components/MainChart.vue";
 import DeviceChart from "./components/DeviceChart.vue";
 
+setDefaultOptions({ locale: zhCN });
+
 use([
-  BarChart,
   LineChart,
   ScatterChart,
   PictorialBarChart,
@@ -31,6 +31,8 @@ use([
   TitleComponent,
   DatasetComponent,
   TooltipComponent,
+  MarkLineComponent,
+  VisualMapComponent,
   CanvasRenderer,
 ]);
 
@@ -49,6 +51,16 @@ const toggleFullscreen = () => {
   }
 };
 
+const time = ref(new Date());
+let timer = 0;
+
+onBeforeMount(() => {
+  timer = setInterval(() => (time.value = new Date()), 1000);
+});
+
+onBeforeUnmount(() => {
+  clearInterval(timer);
+});
 </script>
 
 <template>
@@ -96,6 +108,7 @@ const toggleFullscreen = () => {
   <footer class="global">
     <div class="status-bar">
       <span>准备就绪</span>
+      <span>{{ format(time, "yyyy-MM-dd HH:mm:ss") }}</span>
     </div>
     <div class="icon-brand">
       <img src="@/assets/images/crsc.png" alt="brand logo" />
@@ -108,9 +121,9 @@ header.global {
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: #1565C0;
-  color:white;
-  border-bottom: 1px solid #DDD;
+  background-color: #1565c0;
+  color: white;
+  border-bottom: 1px solid #ddd;
 
   .icon-app {
     margin-left: 1rem;
@@ -139,17 +152,17 @@ header.global {
   }
 
   .button-refresh {
-    margin-left: .5rem;
+    margin-left: 0.5rem;
     background-image: var(--icon-refresh);
   }
 
   .button-fullscreen {
-    margin-left: .5rem;
+    margin-left: 0.5rem;
     background-image: var(--icon-fullscreen);
   }
 
   .button-close {
-    margin-left: .5rem;
+    margin-left: 0.5rem;
     background-image: var(--icon-close);
   }
 }
@@ -159,10 +172,11 @@ footer.global {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  background-color: #ECEFF1;
-  border-top: 1px solid #DDD;
+  background-color: #eceff1;
+  border-top: 1px solid #ddd;
 
   .status-bar {
+    flex: auto;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -170,9 +184,14 @@ footer.global {
     padding-left: 0.5rem;
 
     span {
+      flex: 1;
       display: block;
-      font-size: .9rem;
+      font-size: 0.9rem;
       padding: 0.3rem 0.5rem;
+      border-right: 1px solid #ddd;
+      &:first-child {
+        flex: 5;
+      }
     }
   }
 
@@ -202,7 +221,7 @@ footer.global {
     flex-direction: column;
     padding: 0.5rem;
     background-color: #fafafa;
-    border-right: 1px solid #DDD;
+    border-right: 1px solid #ddd;
 
     section.selector-train {
       flex: 2;
@@ -242,4 +261,5 @@ footer.global {
       max-height: 26rem;
     }
   }
-}</style>
+}
+</style>

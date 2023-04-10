@@ -1,17 +1,23 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-type propTypes<P extends Array<{id:string}> = Array<{id:string, name:string; width:number}>> = {
-  header: P,
+import { ref } from "vue";
+type propTypes<
+  P extends Array<{ id: string }> = Array<{
+    id: string;
+    name: string;
+    width: number;
+  }>
+> = {
+  header: P;
   data: {
-    [key in P[number]['id']]: string | number;
-  }[],
+    [key in P[number]["id"]]: string | number;
+  }[];
 };
 const props = defineProps<propTypes>();
 const selectList = ref<boolean[]>(props.data.map(() => false));
 
-const row_select = (item:unknown, idx: number) => {
+const row_select = (item: unknown, idx: number) => {
   selectList.value = selectList.value.map((_, i) => i === idx);
-}
+};
 
 row_select(props.data[0], 0);
 </script>
@@ -26,7 +32,12 @@ row_select(props.data[0], 0);
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(item, i) in props.data" :key="i" :class="selectList[i] ? 'selected' : ''" @click="row_select(item, i)">
+      <tr
+        v-for="(item, i) in props.data"
+        :key="i"
+        :class="selectList[i] ? 'selected' : ''"
+        @click="row_select(item, i)"
+      >
         <td v-for="col in header" :key="col.id" :width="col.width">
           {{ item[col.id] }}
         </td>
@@ -36,7 +47,6 @@ row_select(props.data[0], 0);
 </template>
 
 <style lang="scss" scoped>
-
 table {
   margin: 1rem 0;
   width: 100%;
@@ -46,7 +56,7 @@ th {
   background-color: var(--color-background-soft);
 }
 
-td{
+td {
   cursor: pointer;
   background-color: var(--color-background);
 }
@@ -54,7 +64,7 @@ td{
 table,
 th,
 td {
-  position:relative;
+  position: relative;
   padding: 0.3rem 0.5rem;
   border: 1px solid var(--color-border);
   border-collapse: collapse;
@@ -77,8 +87,8 @@ tr:last-of-type td:first-of-type {
 tr:last-of-type td:last-of-type {
   border-bottom-right-radius: 0.5rem;
 }
-tr.selected td{
-  background-color: #1E88E5;
+tr.selected td {
+  background-color: #1e88e5;
   color: white;
 }
 </style>
