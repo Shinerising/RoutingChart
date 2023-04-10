@@ -11,11 +11,12 @@ const props = defineProps<{
       | "retarder"
       | "";
   };
+  occupied?: boolean;
 }>();
 </script>
 
 <template>
-  <div class="vector">
+  <div class="vector" :class="{ occupied: !!props.occupied }">
     <div class="line" v-if="props.device.type"></div>
     <div :class="props.device.type"></div>
     <span :class="props.device.type">{{ props.device.name }}</span>
@@ -77,6 +78,29 @@ const props = defineProps<{
   }
   span.retarder {
     bottom: 0em;
+  }
+}
+.vector.occupied {
+  .line {
+    background-color: red;
+  }
+  div.section {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 48 24" width="48"><path stroke="red" stroke-width="1" d="M0 12l48 0"/></svg>');
+  }
+  div.switch {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 48 24" width="48"><path stroke="red" stroke-width="1" d="M0 12l48 0M16 12l16 -12"/></svg>');
+  }
+  div.switch_reverse {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 48 24" width="48"><path stroke="red" stroke-width="1" d="M0 12l48 0M16 12l16 12"/></svg>');
+  }
+  div.switch_backward {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 48 24" width="48"><path stroke="red" stroke-width="1" d="M0 12l48 0M32 12l-16 -12"/></svg>');
+  }
+  div.switch_backward_reverse {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 48 24" width="48"><path stroke="red" stroke-width="1" d="M0 12l48 0M32 12l-16 12"/></svg>');
+  }
+  div.retarder {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 48 24" width="48"><path fill="white" stroke="red" stroke-width="1" d="M1 9l0 6l46 0l0 -6Z"/></svg>');
   }
 }
 </style>

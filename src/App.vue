@@ -10,6 +10,8 @@ import {
   TitleComponent,
   TooltipComponent,
   DatasetComponent,
+  MarkLineComponent,
+  VisualMapComponent,
 } from "echarts/components";
 import { THEME_KEY } from "vue-echarts";
 import DateSelector from "./components/DateSelector.vue";
@@ -29,6 +31,8 @@ use([
   TitleComponent,
   DatasetComponent,
   TooltipComponent,
+  MarkLineComponent,
+  VisualMapComponent,
   CanvasRenderer,
 ]);
 

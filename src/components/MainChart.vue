@@ -10,35 +10,43 @@ const legend = ref<
     name: string;
     color: string;
     hidden?: boolean;
+    disabled?: boolean;
   }[]
 >([
   {
     name: "占用",
     color: "#D32F2F",
+    disabled: true,
   },
   {
     name: "出清",
     color: "#1565C0",
+    disabled: true,
   },
   {
     name: "控岔",
     color: "#FF8F00",
+    disabled: true,
   },
   {
     name: "锁闭",
     color: "#FBC02D",
+    disabled: true,
   },
   {
     name: "解锁",
     color: "#039BE5",
+    disabled: true,
   },
   {
     name: "开放",
     color: "#43A047",
+    disabled: true,
   },
   {
     name: "关闭",
     color: "#880E4F",
+    disabled: true,
   },
   {
     name: "入口时间",
@@ -163,10 +171,46 @@ const speedInData = [
   -1, 17.0, -1, 21, 23, 23.2, 18.2, 18.2, 18.7, 20.1, 18.3, -1, -1,
 ];
 const speedOutData = [
-  -1, 19.3, -1, 23, 19.2, 19.1, 18.7, 18.8, 18.5, 18.8, 5.5, -1, -1,
+  -1, 19.3, -1, 23, 22.1, 19.1, 18.7, 18.8, 18.5, 18.8, 5.5, -1, -1,
 ];
-const timeInData = [-1, 12, -1, 17, 20, 23, 26, 27, 30, -1, 48, -1, -1];
-const timeOutData = [-1, 14, -1, 20, 23, 26, 30, 35, 44, -1, 70, -1, -1];
+const timeInData = [
+  -1, 0, -1, 10.3, 15.2, 21.5, 24.7, 29.2, 33.7, 38, 61.2, -1, -1,
+];
+const timeOutData = [
+  -1, 4.7, -1, 13.9, 19.1, 26.1, 29.7, 34.1, 40, 54.6, 83.2, -1, -1,
+];
+const getSpeedLineData = () => {
+  const timeTotalData = [...timeInData, ...timeOutData];
+  const speedTotalData = [...speedInData, ...speedOutData];
+  const deviceTotalData = [
+    ...deviceList.map((item) => item.name),
+    ...deviceList.map((item) => item.name),
+  ];
+  return timeTotalData
+    .map(
+      (item, index) =>
+        [
+          item,
+          speedTotalData[index],
+          index >= deviceList.length ? "" : deviceTotalData[index],
+          index < deviceList.length ? "" : deviceTotalData[index],
+        ] as [number, number, string, string]
+    )
+    .filter((item) => item[0] !== -1)
+    .sort((a, b) => a[0] - b[0]);
+};
+const speedLineData = getSpeedLineData();
+
+const occupyDataList = ref<string[]>([]);
+
+const getSpeedData = (tick: number) => {
+  for (let i = 0; i < speedLineData.length; i++) {
+    if (tick < speedLineData[i][0]) {
+      return i === 0 ? null : speedLineData[i - 1];
+    }
+  }
+  return speedLineData[speedLineData.length - 1];
+};
 
 const getMarker = (legendName: string) => {
   return `<span style="display:inline-block;margin-right:4px;border-radius:10px;width:10px;height:10px;background-color:${
@@ -208,36 +252,174 @@ const lineLegend: {
   },
 ];
 
-const timeInGraphData = timeInData.reduce(
-  (acc, cur, idx) => {
-    if (cur >= 0) {
-      acc.push([idx + 1, cur]);
-    }
-    return acc;
-  },
-  [[0, 0]] as [number, number][]
-);
-const timeOutGraphData = timeOutData.reduce(
-  (acc, cur, idx) => {
-    if (cur >= 0) {
-      acc.push([idx + 1, cur]);
-    }
-    return acc;
-  },
-  [[0, 0]] as [number, number][]
-);
+const timeInGraphData = timeInData.reduce((acc, cur, idx) => {
+  if (cur >= 0) {
+    acc.push([idx + 0.5, cur]);
+  }
+  return acc;
+}, [] as [number, number][]);
+const timeOutGraphData = timeOutData.reduce((acc, cur, idx) => {
+  if (cur >= 0) {
+    acc.push([idx + 0.5, cur]);
+  }
+  return acc;
+}, [] as [number, number][]);
 const speedInGraphData = speedInData.reduce((acc, cur, idx) => {
   if (cur >= 0) {
-    acc.push([idx, cur]);
+    acc.push([idx + 0.5, cur]);
   }
   return acc;
 }, [] as [number, number][]);
 const speedOutGraphData = speedOutData.reduce((acc, cur, idx) => {
   if (cur >= 0) {
-    acc.push([idx, cur]);
+    acc.push([idx + 0.5, cur]);
   }
   return acc;
 }, [] as [number, number][]);
+
+const currentView = ref<"speed" | "time">("speed");
+
+const speedOption = ref({
+  title: [
+    {
+      text: "速度(km/h)",
+      left: 0,
+      padding: 12,
+      textStyle: {
+        fontSize: 12,
+      },
+    },
+  ],
+  grid: {
+    left: 84,
+    right: 0,
+    top: 0,
+    bottom: 0,
+  },
+  tooltip: {
+    trigger: "axis",
+    axisPointer: {
+      axis: "x",
+    },
+    formatter: (args: unknown) => {
+      const [data] = args as [
+        {
+          data: [number, number, string, string];
+          name: string;
+          seriesName: string;
+        }
+      ];
+      return `时间：${format(addSeconds(startTime, data.data[0]), "HH:mm:ss")}
+          <br>${data.seriesName}：${data.data[1]}`;
+    },
+  },
+  yAxis: [
+    {
+      name: "速度",
+      type: "value",
+      min: 0,
+      max: 30,
+      minorSplitLine: {
+        show: true,
+      },
+      axisTick: {
+        show: false,
+      },
+      axisLine: {
+        show: false,
+      },
+      axisLabel: {
+        showMaxLabel: false,
+        showMinLabel: false,
+        formatter: (value: number) => value.toFixed(1),
+      },
+    },
+  ],
+  xAxis: [
+    {
+      type: "value",
+      name: "时间",
+      nameLocation: "end",
+      min: 0,
+      max: 100,
+      axisLabel: {
+        inside: true,
+        align: "right",
+        padding: [0, 8],
+      },
+    },
+  ],
+  visualMap: [
+    {
+      show: false,
+      dimension: 0,
+      showLabel: true,
+      pieces: [
+        {
+          min: 0,
+          max: 0,
+          color: legend.value[9].color,
+        },
+        {
+          min: 0,
+          max: 100,
+          color: legend.value[10].color,
+        },
+      ],
+    },
+  ],
+  series: [
+    {
+      type: "line",
+      name: "速度",
+      data: speedLineData,
+      smooth: false,
+      symbol: "emptyCircle",
+      symbolSize: [8, 8],
+      color: legend.value[9].color,
+      markLine: {
+        silent: true,
+        symbol: ["none", "none"],
+        label: { show: false },
+        animation: false,
+        data: [
+          {
+            xAxis: 0,
+            name: "速度动画指示",
+            label: {
+              show: true,
+              position: "end",
+              distance: [0, -48],
+              lineHeight: 16,
+              padding: 8,
+              align: "left",
+              formatter: (args: unknown) => {
+                const { value } = args as { value: number };
+                const data = getSpeedData(value);
+                let text = `时间：${format(
+                  addSeconds(startTime, value),
+                  "HH:mm:ss"
+                )}`;
+                if (data) {
+                  text += `\n速度：${data[1]}`;
+                } else {
+                  text += `\n速度：0`;
+                }
+                return text;
+              },
+            },
+          },
+        ],
+      },
+      endLabel: {
+        show: true,
+        padding: [4, 8],
+        backgroundColor: "rgba(255, 255, 255, .8)",
+        formatter: () => "速度变化曲线",
+      },
+    },
+  ],
+} satisfies EChartsOption);
 
 const chartOption = ref({
   title: [
@@ -281,10 +463,11 @@ const chartOption = ref({
         const index = data[0].dataIndex;
         let text = `设备名：${data[0].name}`;
         for (const item of data) {
+          const marker = getMarker(item.seriesName);
           if (typeof item.data === "string") {
-            text += `<br>${item.marker}${item.seriesName}时间：无`;
+            text += `<br>${marker}${item.seriesName}时间：无`;
           } else if (typeof item.data === "number") {
-            text += `<br>${item.marker}${item.seriesName}时间：${format(
+            text += `<br>${marker}${item.seriesName}时间：${format(
               addSeconds(startTime, item.data),
               "HH:mm:ss"
             )}`;
@@ -382,7 +565,7 @@ const chartOption = ref({
       name: "占用",
       label: {
         show: true,
-        color: legend.value[0].color,
+        color: "transparent",
         position: "insideTop",
       },
       barCategoryGap: "0%",
@@ -390,7 +573,7 @@ const chartOption = ref({
       symbolPosition: "end",
       symbolSize: ["100%", 2],
       symbolOffset: [0, "-100%"],
-      color: legend.value[0].color,
+      color: "transparent",
       data: timeInData.map((item) => (item >= 0 ? item : "-")),
       barGap: "-100%",
       yAxisIndex: 1,
@@ -400,7 +583,7 @@ const chartOption = ref({
       name: "出清",
       label: {
         show: true,
-        color: legend.value[1].color,
+        color: "transparent",
         position: "top",
       },
       barCategoryGap: "0%",
@@ -408,7 +591,7 @@ const chartOption = ref({
       symbolPosition: "end",
       symbolSize: ["100%", 2],
       symbolOffset: [0, "-100%"],
-      color: legend.value[1].color,
+      color: "transparent",
       data: timeOutData.map((item) => (item >= 0 ? item : "-")),
       yAxisIndex: 1,
     },
@@ -417,7 +600,7 @@ const chartOption = ref({
       name: "锁闭",
       label: {
         show: false,
-        color: legend.value[3].color,
+        color: "transparent",
         position: "top",
       },
       barCategoryGap: "0%",
@@ -425,7 +608,7 @@ const chartOption = ref({
       symbolPosition: "end",
       symbolSize: ["100%", 2],
       symbolOffset: [0, "-100%"],
-      color: legend.value[3].color,
+      color: "transparent",
       data: occupyData.map((item) => (item >= 0 ? item : "-")),
       yAxisIndex: 1,
     },
@@ -435,7 +618,8 @@ const chartOption = ref({
       data: timeInGraphData,
       xAxisIndex: 1,
       smooth: true,
-      symbol: "none",
+      symbol: "emptyCircle",
+      symbolSize: [8, 8],
       yAxisIndex: 1,
       color: legend.value[7].color,
       endLabel: {
@@ -451,7 +635,8 @@ const chartOption = ref({
       data: timeOutGraphData,
       xAxisIndex: 1,
       smooth: true,
-      symbol: "none",
+      symbol: "emptyCircle",
+      symbolSize: [8, 8],
       yAxisIndex: 1,
       color: legend.value[8].color,
       endLabel: {
@@ -467,7 +652,8 @@ const chartOption = ref({
       data: speedInGraphData,
       xAxisIndex: 1,
       smooth: false,
-      symbol: "none",
+      symbol: "emptyCircle",
+      symbolSize: [8, 8],
       color: legend.value[9].color,
       endLabel: {
         show: true,
@@ -482,7 +668,8 @@ const chartOption = ref({
       data: speedOutGraphData,
       xAxisIndex: 1,
       smooth: false,
-      symbol: "none",
+      symbol: "emptyCircle",
+      symbolSize: [8, 8],
       color: legend.value[10].color,
       endLabel: {
         show: true,
@@ -493,6 +680,61 @@ const chartOption = ref({
     },
   ],
 } satisfies EChartsOption);
+
+const refreshChart = (seconds: number) => {
+  speedOption.value.visualMap[0].pieces[0].max = seconds;
+  speedOption.value.series[0].markLine.data[0].xAxis = seconds;
+  if (seconds === 0) {
+    occupyDataList.value = [];
+  } else {
+    const item = getSpeedData(seconds);
+    if (!item) {
+      return;
+    }
+    if (item[2] && occupyDataList.value.indexOf(item[2]) === -1) {
+      occupyDataList.value = [...occupyDataList.value, item[2]];
+    }
+    if (item[3] && occupyDataList.value.indexOf(item[3]) !== -1) {
+      occupyDataList.value = occupyDataList.value.filter(
+        (_item) => _item !== item[3]
+      );
+    }
+  }
+};
+
+const isAnimating = ref(false);
+const animationTick = ref<number>(0);
+const animationTimer = ref<number>(0);
+
+const startAnimation = () => {
+  if (isAnimating.value) {
+    return;
+  }
+  refreshChart(0);
+  isAnimating.value = true;
+  animationTimer.value = window.setInterval(() => {
+    animationTick.value += 0.1;
+    if (animationTick.value > speedLineData[speedLineData.length - 1][0]) {
+      animationTick.value = 0;
+      clearInterval(animationTimer.value);
+      isAnimating.value = false;
+    }
+    refreshChart(animationTick.value);
+  }, 1000 / 30);
+};
+const stopAnimation = () => {
+  clearInterval(animationTimer.value);
+  isAnimating.value = false;
+  animationTick.value = 0;
+  refreshChart(0);
+};
+const toggleAnimation = () => {
+  if (isAnimating.value) {
+    stopAnimation();
+  } else {
+    startAnimation();
+  }
+};
 
 const backOptions = [] as {
   name: string;
@@ -529,7 +771,10 @@ const toggleLegend = (item: {
     <div class="sheet">
       <div class="chart-container">
         <div class="chart">
-          <div class="chart-row vchart">
+          <div class="chart-row vchart" v-if="currentView === 'speed'">
+            <v-chart class="chart" :option="speedOption" autoresize />
+          </div>
+          <div class="chart-row vchart" v-if="currentView === 'time'">
             <v-chart class="chart" :option="chartOption" autoresize />
           </div>
           <div class="chart-row slope-design">
@@ -603,7 +848,10 @@ const toggleLegend = (item: {
             <div class="row-content">
               <ul>
                 <li v-for="(item, i) in deviceList" :key="i">
-                  <DeviceVector :device="item" />
+                  <DeviceVector
+                    :device="item"
+                    :occupied="occupyDataList.indexOf(item.name) !== -1"
+                  />
                 </li>
               </ul>
             </div>
@@ -615,11 +863,41 @@ const toggleLegend = (item: {
       <div class="controls">
         <button><i class="icon-prev">前进</i></button>
         <button><i class="icon-next">后退</i></button>
+        <span>
+          &nbsp;
+          <button
+            @click="toggleAnimation()"
+            :class="{ disabled: currentView === 'time' }"
+          >
+            {{ isAnimating ? "停止动画" : "开始动画" }}
+          </button>
+        </span>
+      </div>
+      <div class="toggles">
+        <input
+          type="radio"
+          id="speed-view"
+          name="toggle-view"
+          value="speed"
+          v-model="currentView"
+        />
+        <label for="speed-view">显示速度 - 时间</label>
+        <input
+          type="radio"
+          id="chart-view"
+          name="toggle-view"
+          value="time"
+          v-model="currentView"
+        />
+        <label for="chart-view">显示速度 - 设备</label>
       </div>
       <div class="empty"></div>
       <div class="legend">
         <ul class="group">
-          <li v-for="(item, i) in legend" :key="i">
+          <li
+            v-for="(item, i) in legend.filter((item) => !item.disabled)"
+            :key="i"
+          >
             <label
               :style="{ color: item.color }"
               :class="item.hidden ? 'hidden' : ''"
@@ -801,6 +1079,18 @@ footer {
 
     button {
       margin: 0.25rem;
+    }
+
+    button.disabled {
+      opacity: 0.6;
+      pointer-events: none;
+    }
+  }
+  .toggles {
+    display: flex;
+    align-items: center;
+    > input {
+      margin: 0 0.5rem 0 1rem;
     }
   }
 
