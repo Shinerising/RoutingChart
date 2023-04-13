@@ -44,10 +44,26 @@ const refreshPage = () => {
 
 const toggleFullscreen = () => {
   const doc = document;
-  if (doc.fullscreenElement) {
-    doc.exitFullscreen();
+  if (
+    doc.fullscreenElement ||
+    doc.webkitFullscreenElement ||
+    doc.mozFullScreenElement ||
+    doc.msFullscreenElement
+  ) {
+    const efs =
+      doc.exitFullscreen ||
+      doc.webkitExitFullscreen ||
+      doc.mozCancelFullScreen ||
+      doc.msExitFullscreen;
+    efs.call(doc);
   } else {
-    doc.documentElement.requestFullscreen();
+    const el = doc.documentElement;
+    const rfs =
+      el.requestFullscreen ||
+      el.webkitRequestFullscreen ||
+      el.mozRequestFullscreen ||
+      el.msRequestFullscreen;
+    rfs.call(el);
   }
 };
 
@@ -210,13 +226,12 @@ footer.global {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: stretch;
 
   aside {
     min-width: 18rem;
     max-width: 24rem;
     flex: 1;
-    height: 100%;
     display: flex;
     flex-direction: column;
     padding: 0.5rem;
@@ -250,7 +265,6 @@ footer.global {
     flex-direction: column;
     flex: 4;
     padding: 0.5rem;
-    height: 100%;
 
     .graph-main {
       flex: 10;

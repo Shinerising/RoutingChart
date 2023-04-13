@@ -927,14 +927,11 @@ const toggleLegend = (item: {
   .chart-container {
     height: 100%;
     padding: 1rem;
-
-    .chart {
-      height: 100%;
-    }
   }
 }
 
-.chart {
+.chart-container > .chart {
+  height: 100%;
   display: flex;
   flex-direction: column;
 

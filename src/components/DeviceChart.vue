@@ -434,6 +434,7 @@ const chartOption = {
   border-radius: 0.8rem 0.8rem 0 0;
   display: flex;
   flex-direction: row;
+  align-items: stretch;
 
   .brief {
     flex: 1;
@@ -449,9 +450,8 @@ const chartOption = {
     }
   }
 
-  .chart {
+  > .chart {
     flex: 4;
-    height: 100%;
   }
 }
 

@@ -1,0 +1,31 @@
+table {
+  box-shadow: 0 0 0 1px #ccc !important;
+}
+.graph-device {
+  flex: none !important;
+}
+.graph-device,
+.graph-device > .main > .sheet > .chart,
+.graph-main,
+.graph-main > .main > .sheet,
+.graph-main > .main > .sheet > .chart-container,
+.graph-main > .main > .sheet > .chart-container > .chart > .vchart {
+  display: flex !important;
+  flex-direction: row !important;
+}
+.graph-device > .main,
+.graph-main > .main,
+.graph-main > .main > .sheet > .chart-container,
+.graph-main > .main > .sheet > .chart-container > .chart  {
+  width: 100% !important;
+  align-self: stretch !important;
+  height: auto !important;
+}
+x-vue-echarts{
+  width: 100% !important;
+  align-self: stretch !important;
+  height: auto !important;
+}
+.device .vector{
+  height: 3rem !important;
+}

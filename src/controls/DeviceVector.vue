@@ -13,12 +13,48 @@ const props = defineProps<{
   };
   occupied?: boolean;
 }>();
+
+const vectorData = (() => {
+  switch (props.device.type) {
+    case "section":
+      return "M0 12l48 0";
+    case "switch":
+      return "M0 12l48 0M16 12l16 -12";
+    case "switch_reverse":
+      return "M0 12l48 0M16 12l16 12";
+    case "switch_backward":
+      return "M0 12l48 0M32 12l-16 -12";
+    case "switch_backward_reverse":
+      return "M0 12l48 0M32 12l-16 12";
+    case "retarder":
+      return "M1 9l0 6l46 0l0 -6Z";
+    default:
+      return "";
+  }
+})();
 </script>
 
 <template>
   <div class="vector" :class="{ occupied: !!props.occupied }">
-    <div class="line" v-if="props.device.type"></div>
-    <div :class="props.device.type"></div>
+    <svg
+      preserveAspectRatio="xMidYMid meet"
+      height="24"
+      viewBox="0 0 48 24"
+      width="48"
+    >
+      <path
+        v-if="props.device.type !== ''"
+        stroke-width="1"
+        :stroke="props.occupied ? 'red' : 'black'"
+        d="M-100 12l248 0"
+      />
+      <path
+        stroke-width="1"
+        fill="white"
+        :stroke="props.occupied ? 'red' : 'black'"
+        :d="vectorData"
+      />
+    </svg>
     <span :class="props.device.type">{{ props.device.name }}</span>
   </div>
 </template>
@@ -28,13 +64,11 @@ const props = defineProps<{
   position: relative;
   width: 100%;
   height: 100%;
-  div {
+  clip-path: border-box;
+  svg {
     position: relative;
     width: 100%;
     height: 100%;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
   }
   .line {
     position: absolute;
@@ -42,24 +76,6 @@ const props = defineProps<{
     height: 100%;
     background-color: #000;
     transform: scale(1, calc(1 / 24));
-  }
-  div.section {
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 48 24" width="48"><path stroke="black" stroke-width="1" d="M0 12l48 0"/></svg>');
-  }
-  div.switch {
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 48 24" width="48"><path stroke="black" stroke-width="1" d="M0 12l48 0M16 12l16 -12"/></svg>');
-  }
-  div.switch_reverse {
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 48 24" width="48"><path stroke="black" stroke-width="1" d="M0 12l48 0M16 12l16 12"/></svg>');
-  }
-  div.switch_backward {
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 48 24" width="48"><path stroke="black" stroke-width="1" d="M0 12l48 0M32 12l-16 -12"/></svg>');
-  }
-  div.switch_backward_reverse {
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 48 24" width="48"><path stroke="black" stroke-width="1" d="M0 12l48 0M32 12l-16 12"/></svg>');
-  }
-  div.retarder {
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 48 24" width="48"><path fill="white" stroke="black" stroke-width="1" d="M1 9l0 6l46 0l0 -6Z"/></svg>');
   }
   span {
     display: block;
@@ -78,29 +94,6 @@ const props = defineProps<{
   }
   span.retarder {
     bottom: 0em;
-  }
-}
-.vector.occupied {
-  .line {
-    background-color: red;
-  }
-  div.section {
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 48 24" width="48"><path stroke="red" stroke-width="1" d="M0 12l48 0"/></svg>');
-  }
-  div.switch {
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 48 24" width="48"><path stroke="red" stroke-width="1" d="M0 12l48 0M16 12l16 -12"/></svg>');
-  }
-  div.switch_reverse {
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 48 24" width="48"><path stroke="red" stroke-width="1" d="M0 12l48 0M16 12l16 12"/></svg>');
-  }
-  div.switch_backward {
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 48 24" width="48"><path stroke="red" stroke-width="1" d="M0 12l48 0M32 12l-16 -12"/></svg>');
-  }
-  div.switch_backward_reverse {
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 48 24" width="48"><path stroke="red" stroke-width="1" d="M0 12l48 0M32 12l-16 12"/></svg>');
-  }
-  div.retarder {
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 48 24" width="48"><path fill="white" stroke="red" stroke-width="1" d="M1 9l0 6l46 0l0 -6Z"/></svg>');
   }
 }
 </style>
