@@ -82,13 +82,13 @@ const currWeeks = computed(() =>
 
 <template>
   <div class="date-selector">
-    <label for="date-input"> 查询日期： </label>
+    <label for="date-input">班次：</label>
     <div class="date-container" :class="{ focused }">
       <input
         id="date-input"
         class="date-input"
         type="text"
-        placeholder="请输入查询日期"
+        placeholder="请选择查询日期"
         :value="date === '' ? date : format(date, 'yyyy-MM-dd')"
         @focusin="focusIn($event)"
         @focusout="focusOut($event)"
@@ -158,6 +158,10 @@ const currWeeks = computed(() =>
         </div>
       </Transition>
     </div>
+    <div class="shift-selector">
+      <button class="active">白班</button>
+      <button>夜班</button>
+    </div>
   </div>
 </template>
 
@@ -187,7 +191,7 @@ const currWeeks = computed(() =>
     border: 1px solid #ccc;
     border-radius: 0.5em;
     font-size: 1rem;
-    line-height: 1.5;
+    line-height: 1.2;
     border: 1px solid var(--color-border);
     background-color: #fff;
     color: var(--color-text);
@@ -240,6 +244,7 @@ const currWeeks = computed(() =>
     border-radius: 0.5em;
     transform-origin: top;
     box-shadow: 0 0.2em 0.5em rgba(0, 0, 0, 0.15);
+
     .date-pick-header {
       display: flex;
       border-bottom: 1px solid #ddd;
@@ -253,9 +258,11 @@ const currWeeks = computed(() =>
           text-align: center;
         }
       }
+
       > .date-pick-year {
         flex: 4;
       }
+
       > .date-pick-month {
         flex: 3;
       }
@@ -267,12 +274,14 @@ const currWeeks = computed(() =>
         background-color: #ddd;
       }
     }
+
     .date-pick-table {
       user-select: none;
       padding: 0.2rem;
       width: 100%;
       table-layout: fixed;
       border-spacing: 0.2em;
+
       > thead {
         > tr {
           > th {
@@ -280,6 +289,7 @@ const currWeeks = computed(() =>
           }
         }
       }
+
       > tbody {
         > tr {
           > td {
@@ -287,21 +297,26 @@ const currWeeks = computed(() =>
             border: 1px solid transparent;
             border-radius: 0.5em;
             color: #9e9e9e;
+
             &:hover {
               background-color: #eeeeee;
             }
+
             &.highlight {
               color: #212121;
             }
+
             &.today {
               color: #0288d1;
             }
+
             &.selected {
               border-color: #1e88e5;
             }
           }
         }
       }
+
       th,
       td {
         padding: 0.3em 0;
@@ -338,12 +353,44 @@ const currWeeks = computed(() =>
   }
 }
 
+.shift-selector {
+  display: flex;
+  margin-left: 1rem;
+  font-size: 0.9rem;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  line-height: 1.2;
+  border: 1px solid var(--color-border);
+  background-color: #fff;
+
+  > button {
+    border-radius: 0 0.5rem 0.5rem 0;
+    margin: 0;
+    border: none;
+    background-color: transparent;
+    padding: 0.4rem 0.6rem;
+  }
+  > button:first-child {
+    border-radius: 0.5rem 0 0 0.5rem;
+    border-right: 1px solid var(--color-border);
+  }
+  > button:hover{
+    background-color:#eeeeee;
+  }
+  > button.active{
+    background-color: #1e88e5;
+    color:#FFF;
+  }
+}
+
 .date-container.focused {
   .icon-calendar,
   .button-clear {
     opacity: 1;
   }
 }
+
 .v-enter-active.date-pick-panel,
 .v-leave-active.date-pick-panel {
   transition: opacity 0.25s 0.15s, transform 0.25s 0.15s;

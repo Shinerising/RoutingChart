@@ -229,8 +229,8 @@ footer.global {
   align-items: stretch;
 
   aside {
-    min-width: 18rem;
-    max-width: 24rem;
+    min-width: 24rem;
+    max-width: 28rem;
     flex: 1;
     display: flex;
     flex-direction: column;
