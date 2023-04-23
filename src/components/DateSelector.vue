@@ -78,6 +78,8 @@ const currWeeks = computed(() =>
     })
   )
 );
+
+const shift = ref<"day" | "night">("day");
 </script>
 
 <template>
@@ -159,8 +161,12 @@ const currWeeks = computed(() =>
       </Transition>
     </div>
     <div class="shift-selector">
-      <button class="active">白班</button>
-      <button>夜班</button>
+      <button :class="{ active: shift === 'day' }" @click="shift = 'day'">
+        白班
+      </button>
+      <button :class="{ active: shift === 'night' }" @click="shift = 'night'">
+        夜班
+      </button>
     </div>
   </div>
 </template>
@@ -358,29 +364,31 @@ const currWeeks = computed(() =>
   margin-left: 1rem;
   font-size: 0.9rem;
   align-items: center;
-  border: 1px solid #ccc;
   border-radius: 0.5rem;
   line-height: 1.2;
-  border: 1px solid var(--color-border);
   background-color: #fff;
 
   > button {
-    border-radius: 0 0.5rem 0.5rem 0;
+    border: 1px solid #ccc;
     margin: 0;
-    border: none;
     background-color: transparent;
     padding: 0.4rem 0.6rem;
   }
   > button:first-child {
     border-radius: 0.5rem 0 0 0.5rem;
-    border-right: 1px solid var(--color-border);
+    border-right: none;
   }
-  > button:hover{
-    background-color:#eeeeee;
+  > button:last-child {
+    border-radius: 0 0.5rem 0.5rem 0;
+    border-left: none;
   }
-  > button.active{
+  > button:hover {
+    background-color: #eeeeee;
+  }
+  > button.active {
+    border: 1px solid #ccc;
     background-color: #1e88e5;
-    color:#FFF;
+    color: #fff;
   }
 }
 
