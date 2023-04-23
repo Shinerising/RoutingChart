@@ -84,7 +84,7 @@ const shift = ref<"day" | "night">("day");
 
 <template>
   <div class="date-selector">
-    <label for="date-input">班次：</label>
+    <label for="date-input">日期：</label>
     <div class="date-container" :class="{ focused }">
       <input
         id="date-input"
@@ -372,15 +372,16 @@ const shift = ref<"day" | "night">("day");
     border: 1px solid #ccc;
     margin: 0;
     background-color: transparent;
-    padding: 0.4rem 0.6rem;
   }
   > button:first-child {
     border-radius: 0.5rem 0 0 0.5rem;
     border-right: none;
+    padding: 0.4rem 0.5rem 0.4rem 0.6rem;
   }
   > button:last-child {
     border-radius: 0 0.5rem 0.5rem 0;
     border-left: none;
+    padding: 0.4rem 0.6rem 0.4rem 0.5rem;
   }
   > button:hover {
     background-color: #eeeeee;
