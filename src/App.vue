@@ -77,10 +77,12 @@ onBeforeMount(() => {
 onBeforeUnmount(() => {
   clearInterval(timer);
 });
+
+const isApp = document.location.href.includes("app=true");
 </script>
 
 <template>
-  <header class="global">
+  <header class="global" v-if="!isApp">
     <div class="icon-app">
       <img src="@/assets/images/app.png" alt="app logo" />
     </div>
