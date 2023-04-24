@@ -96,6 +96,18 @@ onBeforeUnmount(() => {
   </header>
   <div class="container workarea">
     <aside>
+      <section class="selector-station">
+        <select class="select-computer">
+          <option>
+            默认计算机
+          </option>
+        </select>
+        <select class="select-station">
+          <option>
+            默认站场
+          </option>
+        </select>
+      </section>
       <section class="selector-date">
         <DateSelector />
       </section>
@@ -237,6 +249,18 @@ footer.global {
     padding: 0.5rem;
     background-color: #fafafa;
     border-right: 1px solid #ddd;
+
+    section.selector-station{
+      flex: none;
+    display: flex;
+      > .select-computer {
+    flex: 1;
+    margin-right:1rem;
+      }
+      > .select-station {
+    flex: 1;
+      }
+    }
 
     section.selector-train {
       flex: 2;
